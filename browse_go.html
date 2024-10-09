@@ -11,14 +11,17 @@
     <div id="navbar"></div>
     
     <div class="data-table-container">
-      <input type="text" id="searchInput" class="data-table-search" placeholder="Search by species...">
+
+      <h1 class="browse-header">Browse by GO terms</h1>
+      
+      <input type="text" id="searchInput" class="data-table-search" placeholder="Filter by GO term...">
       <table id="dataTable" class="data-table">
         <thead>
           <tr>
-            <th>Species</th>
+            <th>GO term</th>
+            <th>Number of prompts</th>
             <th>Number of generated DNA seqs</th>
             <th>Number of generated protein seqs</th>
-            <!--th>Number of Pred. TA loci</th-->
           </tr>
         </thead>
         <tbody></tbody>

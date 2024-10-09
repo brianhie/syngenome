@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SynGenome | About</title>
+    <link rel="stylesheet" href="syngenome.css">
+  </head>
+
+  <body>
+    <div id="navbar"></div>
+
+    <div class="container">
+
+      <h1 class="about-title">About</h1>
+
+      <p>
+	SynGenome is a first of its kind synthetic metagenomics database
+      </p>
+
+      <h2 class="about-title">Methodology</h2>
+
+      <p>
+	We take DNA sequences corresponding to UniProt IDs and use them to sample with Evo.
+      </p>
+
+      <h2 class="about-title">Limitations</h2>
+
+      <p>
+	Sampling with a large DNA language model is prone to repetitive sequences and fundamentally these are synthetic sequences.
+      </p>
+
+      <h2 class="about-title">License and citation</h2>
+
+      <p>
+	SynGenome is available freely under a CC attribution license. If you find any of these generations or this site useful, please cite Merchant et al. (2024).
+      </p>
+
+      <script src="assets/js/syngenome.js"></script>
+      <script> renderNav('./navbar.html'); </script>
+  </body>
+</html>
