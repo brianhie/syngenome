@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SynGenome | Browse species</title>
+    <link rel="stylesheet" href="syngenome.css">
+  </head>
+
+  <body>
+    <div id="navbar"></div>
+    
+    <div class="data-table-container">
+      <input type="text" id="searchInput" class="data-table-search" placeholder="Search by species...">
+      <table id="dataTable" class="data-table">
+        <thead>
+          <tr>
+            <th>Species</th>
+            <th>Number of generated DNA seqs</th>
+            <th>Number of generated protein seqs</th>
+            <!--th>Number of Pred. TA loci</th-->
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="data-table-pagination">
+        <button id="prevButton">Previous</button>
+        <button id="nextButton">Next</button>
+      </div>
+    </div>
+
+    <script src="assets/js/syngenome.js"></script>
+    <script> renderNav('./navbar.html'); </script>
+    <script src="assets/js/browse.js"></script>
+
+  </body>
+</html>

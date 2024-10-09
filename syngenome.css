@@ -8,7 +8,7 @@ body {
 .container {
     max-width: 800px;
     margin: 80px auto;
-    padding: 20px;
+    padding: 40px;
     text-align: center;
 }
 
@@ -218,4 +218,57 @@ body {
     display: block;
     max-height: 500px;
     opacity: 1;
+}
+
+.data-table-container {
+    max-width: 800px;
+    margin: 140px auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.data-table-search {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th, .data-table td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.data-table th {
+    background-color: #f2f2f2;
+}
+
+.data-table-pagination {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.data-table-pagination button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.data-table-pagination button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
 }

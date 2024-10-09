@@ -22,17 +22,19 @@
 
         <div class="example-queries" id="exampleQueries"></div>
 
-	<div class="browse-buttons">
-	  <button class="browse-button">Browse by GO term</button>
-	  <button class="browse-button">Browse by domain</button>
-	  <button class="browse-button">Browse by species</button>
-	</div>
-
       </form>
 
-    <script src="syngenome.js"></script>
-    <script>renderNav('./navbar.html')</script>
-    </div>
+      <form id="browseForm" class="browse-form">
+	<div class="browse-buttons">
+	  <button id="go-term-button" class="browse-button">Browse by GO term</button>
+	  <button id="domain-button" class="browse-button">Browse by domain</button>
+	  <button id="species-button" class="browse-button">Browse by species</button>
+	</div>
+      </form>
+
+    <script src="assets/js/syngenome.js"></script>
+    <script> renderNav('./navbar.html'); </script>
+    <script src="assets/js/index.js"></script>
 
   </body>
 </html>
