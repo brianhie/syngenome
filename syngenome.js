@@ -32,3 +32,12 @@ searchForm.addEventListener('submit', (e) => {
         alert(`Searching for: ${searchQuery}`);
     }
 });
+
+function renderNav(html_fname) {
+    fetch(html_fname)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('navbar').innerHTML = data;
+            addEventListeners();
+        });
+}
