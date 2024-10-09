@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SynGenome | Browse InterPro domains</title>
+    <title>SynGenome | Search results</title>
     <link rel="stylesheet" href="syngenome.css">
   </head>
 
@@ -12,14 +12,14 @@
     
     <div class="data-table-container">
 
-      <h1 class="browse-header">Browse by InterPro domain</h1>
+      <h1 class="browse-header">Search results</h1>
       
-      <input type="text" id="searchInput" class="data-table-search" placeholder="Filter by domain ID...">
+      <input type="text" id="searchInput" class="data-table-search" placeholder="Filter by UniProt ID...">
       <table id="dataTable" class="data-table">
         <thead>
           <tr>
-            <th>Domain ID</th>
-            <th>Domain name</th>
+            <th>UniProt ID</th>
+            <th>Name</th>
             <th>Number of prompts</th>
             <th>Number of generated DNA seqs</th>
             <th>Number of generated protein seqs</th>
@@ -37,7 +37,7 @@
     <script src="assets/js/search.js"></script>
     <script>
       renderNav('./navbar.html');
-      renderTableBrowse();
+      renderTableSearch();
     </script>
 
   </body>

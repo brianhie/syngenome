@@ -12,13 +12,14 @@
     
     <div class="data-table-container">
 
-      <h1 class="browse-header">Browse by GO terms</h1>
+      <h1 class="browse-header">Browse by GO term</h1>
       
       <input type="text" id="searchInput" class="data-table-search" placeholder="Filter by GO term...">
       <table id="dataTable" class="data-table">
         <thead>
           <tr>
             <th>GO term</th>
+            <th>GO ID</th>
             <th>Number of prompts</th>
             <th>Number of generated DNA seqs</th>
             <th>Number of generated protein seqs</th>
@@ -33,8 +34,11 @@
     </div>
 
     <script src="assets/js/syngenome.js"></script>
-    <script> renderNav('./navbar.html'); </script>
-    <script src="assets/js/browse.js"></script>
+    <script src="assets/js/search.js"></script>
+    <script>
+      renderNav('./navbar.html');
+      renderTableBrowse();
+    </script>
 
   </body>
 </html>

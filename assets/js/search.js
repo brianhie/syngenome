@@ -13,30 +13,69 @@ const data = [
 
 const itemsPerPage = 5;
 let currentPage = 1;
-let filteredData = [...data];
 
 const tableBody = document.querySelector('#dataTable tbody');
 const prevButton = document.getElementById('prevButton');
 const nextButton = document.getElementById('nextButton');
 const searchInput = document.getElementById('searchInput');
 
-function renderTable() {
+// Extract key and value from URL parameters.
+const urlParams = new URLSearchParams(window.location.search);
+let filterKey = null;
+let filterValue = null;
+
+// Iterate through URL parameters and use the first one found.
+for (const [key, value] of urlParams.entries()) {
+    filterKey = key;
+    filterValue = value.toLowerCase();
+    break; // We only need the first parameter.
+}
+
+let filteredData = data.filter(item => {
+    if (filterKey && filterValue) {
+        const itemValue = item[filterKey];
+        if (Array.isArray(itemValue)) {
+            return itemValue.some(element => 
+                String(element).toLowerCase().includes(filterValue)
+            );
+        } else {
+            return String(itemValue).toLowerCase().includes(filterValue);
+        }
+    }
+    return true; // If no URL filter, include all items.
+});
+
+function renderTable(newPage) {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const pageData = filteredData.slice(startIndex, endIndex);
-
     tableBody.innerHTML = '';
     pageData.forEach(item => {
         const row = document.createElement('tr');
-        Object.values(item).forEach(value => {
+        Object.entries(item).forEach(([key, value], index) => {
             const cell = document.createElement('td');
-            cell.textContent = value;
+            if (index === 0) {
+                // Create a link for the first cell.
+                const link = document.createElement('a');
+                link.href = `/${newPage}.html?${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+                link.textContent = value;
+                cell.appendChild(link);
+            } else {
+                cell.textContent = value;
+            }
             row.appendChild(cell);
         });
         tableBody.appendChild(row);
     });
-
     updatePaginationButtons();
+}
+
+function renderTableBrowse() {
+    renderTable('search');
+}
+
+function renderTableSearch() {
+    renderTable('prompt');
 }
 
 function updatePaginationButtons() {
@@ -60,11 +99,29 @@ nextButton.addEventListener('click', () => {
 
 searchInput.addEventListener('input', (e) => {
     const searchTerm = e.target.value.toLowerCase();
-    filteredData = data.filter(item => 
-        item.Species.toLowerCase().includes(searchTerm)
-    );
+    filteredData = data.filter(item => {
+        const speciesMatch = item["Species"].toLowerCase().includes(searchTerm);
+        
+        // If we have a filter from URL parameters, apply it.
+        if (filterKey && filterValue) {
+            const itemValue = item[filterKey];
+            
+            if (Array.isArray(itemValue)) {
+                // If itemValue is an array, check if any element includes filterValue.
+                const arrayMatch = itemValue.some(element => 
+                    String(element).toLowerCase().includes(filterValue)
+                );
+                return speciesMatch && arrayMatch;
+            } else {
+                // If itemValue is not an array, proceed as before.
+                const stringMatch = String(itemValue).toLowerCase().includes(filterValue);
+                return speciesMatch && stringMatch;
+            }
+        }
+        
+        // If no URL filter, just use the species filter
+        return speciesMatch;
+    });
     currentPage = 1;
     renderTable();
 });
-
-renderTable();
