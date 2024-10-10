@@ -71,7 +71,7 @@ function renderTableBrowse() {
 }
 
 function renderTableSearch() {
-    newPage = 'prompt';
+    newPage = 'entry';
     pageData = renderTable();
 
     if (pageData.length === 1) {
