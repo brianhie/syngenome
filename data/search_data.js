@@ -148,5 +148,15 @@ let data = [
     "Number of generated protein seqs": 132,
     "Domain ID": ["IPR001245", "IPR001452", "IPR001611", "IPR001680"],
     "GO term": ["Apoptotic process", "Transcription", "Ion transport", "Cell cycle"]
+  },
+  {
+    "UniProt ID": "P22995",
+    "Name": "Antitoxin ParD",
+    "Species": "Escherichia coli",
+    "Number of prompts": 12,
+    "Number of generated DNA seqs": 67,
+    "Number of generated protein seqs": 134,
+    "Domain ID": ["IPR022789", "IPR038296", "IPR010985"],
+    "GO term": ["Toxin sequestering activity", "Protein homodimerization activity"]
   }
 ];

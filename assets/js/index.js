@@ -2,7 +2,7 @@ const exampleQueries = [
     'toxin sequestering activity',
     'GO:0097351',
     'P22995',
-    'PF09386',
+    'IPR022789',
     'Escherichia coli'
 ];
 

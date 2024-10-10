@@ -39,7 +39,9 @@ function renderTable() {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const pageData = filteredData.slice(startIndex, endIndex);
+
     tableBody.innerHTML = '';
+
     pageData.forEach(item => {
         const row = document.createElement('tr');
         Object.entries(item).forEach(([key, value], index) => {
@@ -57,7 +59,10 @@ function renderTable() {
         });
         tableBody.appendChild(row);
     });
+
     updatePaginationButtons();
+
+    return pageData;
 }
 
 function renderTableBrowse() {
@@ -67,7 +72,14 @@ function renderTableBrowse() {
 
 function renderTableSearch() {
     newPage = 'prompt';
-    renderTable();
+    pageData = renderTable();
+
+    if (pageData.length === 1) {
+        const firstItem = pageData[0];
+        const [firstKey, firstValue] = Object.entries(firstItem)[0];
+        const redirectUrl = `/${newPage}.html?${encodeURIComponent(firstKey)}=${encodeURIComponent(firstValue)}`;
+        window.location.href = redirectUrl;
+    }
 }
 
 function updatePaginationButtons() {
