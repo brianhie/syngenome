@@ -13,8 +13,13 @@
     <div class="data-table-container">
 
       <h1 class="browse-header">Browse by species</h1>
-      
+
       <input type="text" id="searchInput" class="data-table-search" placeholder="Filter by species name...">
+
+      <p class="browse-subtitle">
+	Showing species with X or more prompts.
+      </p>
+      
       <table id="dataTable" class="data-table">
         <thead>
           <tr>
@@ -33,6 +38,7 @@
     </div>
 
     <script src="assets/js/syngenome.js"></script>
+    <script src="data/browse_species_data.js"></script>
     <script src="assets/js/search.js"></script>
     <script>
       renderNav('./navbar.html');

@@ -1,18 +1,6 @@
-const data = [
-    {"Species": "Escherichia coli", "Number of generated DNA seqs": 59274, "Number of generated protein seqs": 99, "Number of Pred. TA loci": 59175},
-    {"Species": "Klebsiella pneumoniae", "Number of generated DNA seqs": 22177, "Number of generated protein seqs": 4, "Number of Pred. TA loci": 22173},
-    {"Species": "Mycobacterium tuberculosis", "Number of generated DNA seqs": 21102, "Number of generated protein seqs": 59, "Number of Pred. TA loci": 21043},
-    {"Species": "Staphylococcus aureus", "Number of generated DNA seqs": 10907, "Number of generated protein seqs": 34, "Number of Pred. TA loci": 10873},
-    {"Species": "Salmonella enterica", "Number of generated DNA seqs": 7580, "Number of generated protein seqs": 12, "Number of Pred. TA loci": 7568},
-    {"Species": "Pseudomonas aeruginosa", "Number of generated DNA seqs": 4295, "Number of generated protein seqs": 9, "Number of Pred. TA loci": 4286},
-    {"Species": "Enterococcus faecalis", "Number of generated DNA seqs": 2721, "Number of generated protein seqs": 14, "Number of Pred. TA loci": 2707},
-    {"Species": "Enterobacter hormaechei", "Number of generated DNA seqs": 2709, "Number of generated protein seqs": 0, "Number of Pred. TA loci": 2709},
-    {"Species": "Vibrio cholerae", "Number of generated DNA seqs": 1873, "Number of generated protein seqs": 19, "Number of Pred. TA loci": 1854},
-    {"Species": "Acinetobacter baumannii", "Number of generated DNA seqs": 1651, "Number of generated protein seqs": 6, "Number of Pred. TA loci": 1645}
-];
-
 const itemsPerPage = 5;
 let currentPage = 1;
+let newPage = 'search';
 
 const tableBody = document.querySelector('#dataTable tbody');
 const prevButton = document.getElementById('prevButton');
@@ -33,19 +21,21 @@ for (const [key, value] of urlParams.entries()) {
 
 let filteredData = data.filter(item => {
     if (filterKey && filterValue) {
-        const itemValue = item[filterKey];
-        if (Array.isArray(itemValue)) {
-            return itemValue.some(element => 
+        const searchValues = filterKey.toLowerCase() === "text" 
+            ? Object.values(item) 
+            : [item[filterKey]];
+
+        return searchValues.some(value => {
+            const searchArray = Array.isArray(value) ? value : [value];
+            return searchArray.some(element =>
                 String(element).toLowerCase().includes(filterValue)
             );
-        } else {
-            return String(itemValue).toLowerCase().includes(filterValue);
-        }
+        });
     }
     return true; // If no URL filter, include all items.
 });
 
-function renderTable(newPage) {
+function renderTable() {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const pageData = filteredData.slice(startIndex, endIndex);
@@ -71,11 +61,13 @@ function renderTable(newPage) {
 }
 
 function renderTableBrowse() {
-    renderTable('search');
+    newPage = 'search';
+    renderTable();
 }
 
 function renderTableSearch() {
-    renderTable('prompt');
+    newPage = 'prompt';
+    renderTable();
 }
 
 function updatePaginationButtons() {
@@ -100,25 +92,25 @@ nextButton.addEventListener('click', () => {
 searchInput.addEventListener('input', (e) => {
     const searchTerm = e.target.value.toLowerCase();
     filteredData = data.filter(item => {
-        const speciesMatch = item["Species"].toLowerCase().includes(searchTerm);
-        
-        // If we have a filter from URL parameters, apply it.
+	const key = Object.entries(item)[0][0];
+        const speciesMatch = item[key].toLowerCase().includes(searchTerm);
+
+        // If we have a filter from URL parameters, apply it
         if (filterKey && filterValue) {
-            const itemValue = item[filterKey];
-            
-            if (Array.isArray(itemValue)) {
-                // If itemValue is an array, check if any element includes filterValue.
-                const arrayMatch = itemValue.some(element => 
+            const searchValues = filterKey.toLowerCase() === "text" 
+                  ? Object.values(item) 
+                  : [item[filterKey]];
+
+            const urlFilterMatch = searchValues.some(value => {
+                const searchArray = Array.isArray(value) ? value : [value];
+                return searchArray.some(element =>
                     String(element).toLowerCase().includes(filterValue)
                 );
-                return speciesMatch && arrayMatch;
-            } else {
-                // If itemValue is not an array, proceed as before.
-                const stringMatch = String(itemValue).toLowerCase().includes(filterValue);
-                return speciesMatch && stringMatch;
-            }
+            });
+
+            return speciesMatch && urlFilterMatch;
         }
-        
+
         // If no URL filter, just use the species filter
         return speciesMatch;
     });

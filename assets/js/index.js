@@ -3,7 +3,7 @@ const exampleQueries = [
     'GO:0097351',
     'P22995',
     'PF09386',
-    'E. coli'
+    'Escherichia coli'
 ];
 
 const searchForm = document.getElementById('searchForm');
@@ -28,9 +28,7 @@ searchForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const searchQuery = searchInput.value.trim();
     if (searchQuery) {
-        console.log('Searching for:', searchQuery);
-        // Here you would typically call your search function
-        alert(`Searching for: ${searchQuery}`);
+	window.location.href = `/search.html?text=${encodeURIComponent(searchQuery)}`;
     }
 });
 
