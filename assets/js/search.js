@@ -49,7 +49,11 @@ function renderTable() {
             if (index === 0) {
                 // Create a link for the first cell.
                 const link = document.createElement('a');
-                link.href = `/${newPage}.html?${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+		if (newPage === 'entry') {
+		    link.href = `/${newPage}.html?id=${encodeURIComponent(value)}`;
+		} else {
+                    link.href = `/${newPage}.html?${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+		}
                 link.textContent = value;
                 cell.appendChild(link);
             } else {
@@ -77,7 +81,7 @@ function renderTableSearch() {
     if (pageData.length === 1) {
         const firstItem = pageData[0];
         const [firstKey, firstValue] = Object.entries(firstItem)[0];
-        const redirectUrl = `/${newPage}.html?${encodeURIComponent(firstKey)}=${encodeURIComponent(firstValue)}`;
+	const redirectUrl = `/${newPage}.html?id=${encodeURIComponent(firstValue)}`;
         window.location.href = redirectUrl;
     }
 }
