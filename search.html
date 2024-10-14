@@ -21,29 +21,30 @@
             <th>UniProt ID</th>
             <th>Name</th>
             <th>Species</th>
+            <th>Domains</th>
+            <th>GO terms</th>
+            <th>GO IDs</th>
             <th>Number of prompts</th>
             <th>Number of generated DNA seqs</th>
             <th>Number of generated protein seqs</th>
-            <th>Domains</th>
-            <th>GO terms</th>
           </tr>
         </thead>
         <tbody></tbody>
       </table>
-
       <div class="data-table-pagination">
         <button id="prevButton">Previous</button>
         <button id="nextButton">Next</button>
       </div>
     </div>
 
-    <script src="assets/js/syngenome.js"></script>
-    <script src="data/search_data.js"></script>
-    <script src="assets/js/search.js"></script>
-    <script>
-      renderNav('./navbar.html');
-      renderTableSearch();
-    </script>
+      <script src="/assets/js/utils.js"></script>
+      <script src="/assets/js/table.js"></script>
+      <script src="/assets/js/syngenome.js"></script>
+      <script src="/assets/js/urls.js"></script>
+      <script>
+	renderNav('./navbar.html');
+        renderTable(uniprotUrl);
+      </script>
 
   </body>
 </html>

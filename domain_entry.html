@@ -27,11 +27,12 @@
             <th>UniProt ID</th>
             <th>Name</th>
             <th>Species</th>
+            <th>Domains</th>
+            <th>GO terms</th>
+            <th>GO IDs</th>
             <th>Number of prompts</th>
             <th>Number of generated DNA seqs</th>
             <th>Number of generated protein seqs</th>
-            <th>Domains</th>
-            <th>GO terms</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -45,10 +46,11 @@
       <script src="/assets/js/entry.js"></script>
       <script src="/assets/js/table.js"></script>
       <script src="/assets/js/syngenome.js"></script>
+      <script src="/assets/js/urls.js"></script>
       <script>
 	renderNav('./navbar.html');
-        const jsonUrl = 'UNIPROT_URL';
-        renderTable(jsonURL);
+        generatePage('domain', domainUrl)
+        renderTable(uniprotUrl);
       </script>
   </body>
 </html>

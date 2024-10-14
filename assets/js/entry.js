@@ -1,4 +1,4 @@
-function generatePageGO(go_id) {
+function generatePageGO(go_id, jsonUrl) {
     showLoading();
     fetchAndParseJSON(jsonUrl)
         .then(data => {
@@ -35,7 +35,7 @@ function generatePageGO(go_id) {
         });
 }
 
-function generatePageDomain(domain_id) {
+function generatePageDomain(domain_id, jsonUrl) {
     showLoading();
     fetchAndParseJSON(jsonUrl)
         .then(data => {
@@ -71,7 +71,7 @@ function generatePageDomain(domain_id) {
         });
 }
 
-function generatePageSpecies(species_id) {
+function generatePageSpecies(species_id, jsonUrl) {
     showLoading();
     fetchAndParseJSON(jsonUrl)
         .then(data => {
@@ -107,7 +107,7 @@ function generatePageSpecies(species_id) {
         });
 }
 
-function generatePageUniProt(uniprot_id) {
+function generatePageUniProt(uniprot_id, jsonUrl) {
     showLoading();
     fetchAndParseJSON(jsonUrl)
         .then(data => {
@@ -123,11 +123,11 @@ function generatePageUniProt(uniprot_id) {
 
             const row = filteredData[0];
 
-            const species_content = `<a href="/species_entry.html?id=${row.species}">${row.species}</a>`;
-            const domain_content = row.domains.forEach(domain => {
+            const species_content = `<a href="/species_entry.html?id=${row.species_id}">${row.species_id}</a>`;
+            const domain_content = row.domain_ids.map(domain => {
                 return `<a href="/uniprot_entry.html?id=${domain}">${domain}</a>`;
             }).join(', ');
-            const go_content = zip(row.go_ids, row.go_terms).forEach(([go_id, go_term]) => {
+            const go_content = zip(row.go_ids, row.go_terms).map(([go_id, go_term]) => {
                 return `
                     <a href="/go_entry.html?id=${go_id}">
                         ${go_term} (${go_id})
@@ -159,15 +159,16 @@ function generatePageUniProt(uniprot_id) {
         });
 }
 
-function generatePage(entry_type) {
-    if (entry_type === 'go') {
-        const generatePageFunc = generatePageGO;
-    } else if (entry_tye === 'domain') {
-        const generatePageFunc = generatePageDomain;
-    } else if (entry_tye === 'species') {
-        const generatePageFunc = generatePageSpecies;
-    } else if (entry_tye === 'uniprot') {
-        const generatePageFunc = generatePageUniProt;
+function generatePage(entryType, jsonUrl) {
+    let generatePageFunc = null;
+    if (entryType === 'go') {
+        generatePageFunc = generatePageGO;
+    } else if (entryType === 'domain') {
+        generatePageFunc = generatePageDomain;
+    } else if (entryType === 'species') {
+        generatePageFunc = generatePageSpecies;
+    } else if (entryType === 'uniprot') {
+         generatePageFunc = generatePageUniProt;
     }
     
     document.addEventListener('DOMContentLoaded', (event) => {
@@ -175,7 +176,7 @@ function generatePage(entry_type) {
         let id = urlParams.get('id');
         if (id) {
             id = decodeURIComponent(id);
-            generatePageFunc(id);
+            generatePageFunc(id, jsonUrl);
         } else {
             document.getElementById('content').innerHTML = '<p>No entry found! Please check the URL.</p>';
         }

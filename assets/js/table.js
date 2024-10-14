@@ -1,11 +1,14 @@
-const itemsPerPage = 5;
-let currentPage = 1;
-let newPage = 'search';
+let filteredData = null;
+let jsonUrl = null;
 
 const tableBody = document.querySelector('#dataTable tbody');
 const prevButton = document.getElementById('prevButton');
 const nextButton = document.getElementById('nextButton');
 const searchInput = document.getElementById('searchInput');
+
+const itemsPerPage = 5;
+let currentPage = 1;
+let newPage = 'search';
 
 // Extract key and value from URL parameters.
 const urlParams = new URLSearchParams(window.location.search);
@@ -20,7 +23,7 @@ for (const [key, value] of urlParams.entries()) {
 
 function isItemAllowableUnderURLParam(item) {
     if (filterKey && filterValue) {
-        const searchValues = filterKey.toLowerCase() === "text" 
+        const searchValues = ((filterKey.toLowerCase() === "id") || (filterKey.toLowerCase() === "text"))
               ? Object.values(item) 
               : [item[filterKey]];
 
@@ -34,14 +37,30 @@ function isItemAllowableUnderURLParam(item) {
     return true; // If no URL filter, include all items.
 }
 
-function renderTable(jsonUrl) {
-    showLoading();
+function updatePaginationButtons(filteredData) {
+    prevButton.disabled = currentPage === 1;
+    nextButton.disabled = currentPage === Math.ceil(filteredData.length / itemsPerPage);
+}
+
+function renderTable(url, filterTerm) {
+    //showLoading();
+
+    jsonUrl = url;
+
     fetchAndParseJSON(jsonUrl)
         .then(data => {
-            let filteredData = data
-                .filter(item => isItemAllowableUnderURLParam(item))
+            filteredData = data
+                .filter(item => {
+	            const key = Object.entries(item)[0][0];
+                    if (filterTerm) {
+                        const filterMatch = item[key].toLowerCase().includes(filterTerm);
+                        return filterMatch && isItemAllowableUnderURLParam(item);
+                    }
+                    return isItemAllowableUnderURLParam(item);
+                })
                 .sort(item => -item.n_prompts);
-            
+        })
+        .finally(() => {
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
             const pageData = filteredData.slice(startIndex, endIndex);
@@ -52,85 +71,93 @@ function renderTable(jsonUrl) {
                 const row = document.createElement('tr');
                 Object.entries(item).forEach(([key, value], index) => {
                     const cell = document.createElement('td');
+
                     if (key === 'go_id') {
                         const link = document.createElement('a');
 		        link.href = `/go_entry.html?id=${encodeURIComponent(value)}`;
                         link.textContent = value;
                         cell.appendChild(link);
+
                     } else if (key === 'go_ids') {
-                        cell.innerHTML = row.go_ids.forEach(go_id => {
+                        cell.innerHTML = value.map(go_id => {
                             return `<a href="/go_entry.html?id=${encodeURIComponent(go_id)}">${go_id}</a>`;
                         }).join(', ');
+
                     } else if (key === 'go_term') {
                         const link = document.createElement('a');
 		        link.href = `/go_entry.html?id=${encodeURIComponent(value)}`;
                         link.textContent = value;
                         cell.appendChild(link);
+
                     } else if (key === 'go_terms') {
-                        cell.innerHTML = row.go_terms.forEach(go_id => {
+                        cell.innerHTML = value.map(go_term => {
                             return `<a href="/go_entry.html?id=${encodeURIComponent(go_term)}">${go_term}</a>`;
                         }).join(', ');
+
                     } else if (key === 'domain_id') {
                         const link = document.createElement('a');
 		        link.href = `/domain_entry.html?id=${encodeURIComponent(value)}`;
                         link.textContent = value;
                         cell.appendChild(link);
+
+                    } else if (key === 'domain_ids') {
+                        cell.innerHTML = value.map(domain_id => {
+                            return `<a href="/domain_entry.html?id=${encodeURIComponent(domain_id)}">${domain_id}</a>`;
+                        }).join(', ');
+
                     } else if (key === 'species_id') {
                         const link = document.createElement('a');
 		        link.href = `/species_entry.html?id=${encodeURIComponent(value)}`;
                         link.textContent = value;
                         cell.appendChild(link);
+
                     } else if (key === 'uniprot_id') {
                         const link = document.createElement('a');
 		        link.href = `/uniprot_entry.html?id=${encodeURIComponent(value)}`;
                         link.textContent = value;
                         cell.appendChild(link);
+
                     } else if (key === 'n_prompts' ||
                                key === 'n_seqs_dna' ||
                                key === 'n_seqs_prot' ||
                                key === 'go_type' ||
-                               key === 'domain_name') {
+                               key === 'domain_name' ||
+                               key === 'uniprot_name') {
                         cell.textContent = value;
+
                     } else {
                         /* If key is not registered, do not create entry in table. */
                     }
+
+                    if (cell.innerHTML) {
+                        row.appendChild(cell);
+                    }
                 });
-            row.appendChild(cell);
-        });
-        tableBody.appendChild(row);
-    });
+                tableBody.appendChild(row);
+            });
+            updatePaginationButtons(filteredData);
 
-    updatePaginationButtons();
-
-    return pageData;
-}
-
-function updatePaginationButtons() {
-    prevButton.disabled = currentPage === 1;
-    nextButton.disabled = currentPage === Math.ceil(filteredData.length / itemsPerPage);
+            //hideLoading();
+        })
 }
 
 prevButton.addEventListener('click', () => {
     if (currentPage > 1) {
         currentPage--;
-        renderTable();
+        renderTable(jsonUrl);
     }
 });
 
 nextButton.addEventListener('click', () => {
     if (currentPage < Math.ceil(filteredData.length / itemsPerPage)) {
         currentPage++;
-        renderTable();
+        renderTable(jsonUrl);
     }
 });
 
 searchInput.addEventListener('input', (e) => {
     const searchTerm = e.target.value.toLowerCase();
-    filteredData = data.filter(item => {
-	const key = Object.entries(item)[0][0];
-        const searchMatch = item[key].toLowerCase().includes(searchTerm);
-        return searchMatch && isItemAllowableUnderURLParam(item);
-    });
     currentPage = 1;
-    renderTable();
+    renderTable(jsonUrl, searchTerm);
 });
+

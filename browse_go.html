@@ -12,6 +12,11 @@
     
     <div class="data-table-container">
 
+      <div id="loading" style="display: none;">
+        <div class="spinner"></div>
+        <div class="loading-text">Loading data, please wait...</div>
+      </div>
+
       <h1 class="browse-header">Browse by GO term</h1>
       
       <input type="text" id="searchInput" class="data-table-search" placeholder="Filter by GO term...">
@@ -34,13 +39,13 @@
       </div>
     </div>
 
-    <script src="assets/js/utils.js"></script>
-    <script src="assets/js/table.js"></script>
-    <script src="assets/js/syngenome.js"></script>
+    <script src="/assets/js/utils.js"></script>
+    <script src="/assets/js/table.js"></script>
+    <script src="/assets/js/syngenome.js"></script>
+    <script src="/assets/js/urls.js"></script>
     <script>
       renderNav('./navbar.html');
-      const jsonUrl = 'GO_URL';
-      renderTable(jsonUrl);
+      renderTable(goUrl);
     </script>
 
   </body>

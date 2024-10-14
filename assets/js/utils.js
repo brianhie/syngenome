@@ -12,18 +12,17 @@ function hideLoading() {
 }
 
 function fetchAndParseJSON(url) {
-  return fetch(url)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log('Parsed JSON data:', data);
-      return data;
-    })
-    .catch(error => {
-      console.error('Error fetching or parsing JSON:', error);
-    });
+    return fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            return data;
+        })
+        .catch(error => {
+            console.error('Error fetching or parsing JSON:', error);
+        });
 }
