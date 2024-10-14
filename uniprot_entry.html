@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SynGenome</title>
+    <link rel="stylesheet" href="syngenome.css">
+    <script src="/assets/js/papaparse.min.js"></script>
+  </head>
+
+  <body>
+    <div id="navbar"></div>
+
+    <div class="container">
+
+      <div id="loading" style="display: none;">
+        <div class="spinner"></div>
+        <div class="loading-text">Loading data, please wait...</div>
+      </div>
+
+      <div id="content"></div>
+
+      <script src="/assets/js/utils.js"></script>
+      <script src="/assets/js/entry.js"></script>
+      <script src="/assets/js/syngenome.js"></script>
+      <script>
+	renderNav('./navbar.html');
+      </script>
+  </body>
+</html>

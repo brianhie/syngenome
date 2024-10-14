@@ -3,17 +3,23 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SynGenome | Search results</title>
+    <title>SynGenome</title>
     <link rel="stylesheet" href="syngenome.css">
+    <script src="/assets/js/papaparse.min.js"></script>
   </head>
 
   <body>
     <div id="navbar"></div>
-    
-    <div class="data-table-container">
 
-      <h1 class="browse-header">Search results</h1>
-      
+    <div class="container">
+
+      <div id="loading" style="display: none;">
+        <div class="spinner"></div>
+        <div class="loading-text">Loading data, please wait...</div>
+      </div>
+
+      <div id="content"></div>
+
       <input type="text" id="searchInput" class="data-table-search" placeholder="Filter by UniProt ID...">
       <table id="dataTable" class="data-table">
         <thead>
@@ -30,20 +36,19 @@
         </thead>
         <tbody></tbody>
       </table>
-
       <div class="data-table-pagination">
         <button id="prevButton">Previous</button>
         <button id="nextButton">Next</button>
       </div>
-    </div>
 
-    <script src="assets/js/syngenome.js"></script>
-    <script src="data/search_data.js"></script>
-    <script src="assets/js/search.js"></script>
-    <script>
-      renderNav('./navbar.html');
-      renderTableSearch();
-    </script>
-
+      <script src="/assets/js/utils.js"></script>
+      <script src="/assets/js/entry.js"></script>
+      <script src="/assets/js/table.js"></script>
+      <script src="/assets/js/syngenome.js"></script>
+      <script>
+	renderNav('./navbar.html');
+        const jsonUrl = 'UNIPROT_URL';
+        renderTable(jsonURL);
+      </script>
   </body>
 </html>

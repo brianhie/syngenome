@@ -19,11 +19,11 @@ for (const [key, value] of urlParams.entries()) {
     break; // We only need the first parameter.
 }
 
-let filteredData = data.filter(item => {
+function isItemAllowableUnderURLParam(item) {
     if (filterKey && filterValue) {
         const searchValues = filterKey.toLowerCase() === "text" 
-            ? Object.values(item) 
-            : [item[filterKey]];
+              ? Object.values(item) 
+              : [item[filterKey]];
 
         return searchValues.some(value => {
             const searchArray = Array.isArray(value) ? value : [value];
@@ -33,7 +33,9 @@ let filteredData = data.filter(item => {
         });
     }
     return true; // If no URL filter, include all items.
-});
+}
+
+let filteredData = data.filter(item => isItemAllowableUnderURLParam(item));
 
 function renderTable() {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -46,16 +48,20 @@ function renderTable() {
         const row = document.createElement('tr');
         Object.entries(item).forEach(([key, value], index) => {
             const cell = document.createElement('td');
-            if (index === 0) {
-                // Create a link for the first cell.
-                const link = document.createElement('a');
-		if (newPage === 'entry') {
-		    link.href = `/${newPage}.html?id=${encodeURIComponent(value)}`;
-		} else {
-                    link.href = `/${newPage}.html?${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
-		}
-                link.textContent = value;
-                cell.appendChild(link);
+            if (key === 'go_id') {
+                if (Array.isArray(value)) {
+                    value.forEach(go_id => {
+                        const link = document.createElement('a');
+		        link.href = `/go_entry.html?go_id=${encodeURIComponent(go_id)}`;
+                        link.textContent = go_id;
+                        cell.appendChild(link);
+                    });
+                } else {
+                    const link = document.createElement('a');
+		    link.href = `/go_entry.html?go_id=${encodeURIComponent(value)}`;
+                    link.textContent = value;
+                    cell.appendChild(link);
+                }
             } else {
                 cell.textContent = value;
             }
@@ -78,12 +84,12 @@ function renderTableSearch() {
     newPage = 'entry';
     pageData = renderTable();
 
-    if (pageData.length === 1) {
+    /*if (pageData.length === 1) {
         const firstItem = pageData[0];
         const [firstKey, firstValue] = Object.entries(firstItem)[0];
 	const redirectUrl = `/${newPage}.html?id=${encodeURIComponent(firstValue)}`;
         window.location.href = redirectUrl;
-    }
+    }*/
 }
 
 function updatePaginationButtons() {
@@ -109,26 +115,8 @@ searchInput.addEventListener('input', (e) => {
     const searchTerm = e.target.value.toLowerCase();
     filteredData = data.filter(item => {
 	const key = Object.entries(item)[0][0];
-        const speciesMatch = item[key].toLowerCase().includes(searchTerm);
-
-        // If we have a filter from URL parameters, apply it
-        if (filterKey && filterValue) {
-            const searchValues = filterKey.toLowerCase() === "text" 
-                  ? Object.values(item) 
-                  : [item[filterKey]];
-
-            const urlFilterMatch = searchValues.some(value => {
-                const searchArray = Array.isArray(value) ? value : [value];
-                return searchArray.some(element =>
-                    String(element).toLowerCase().includes(filterValue)
-                );
-            });
-
-            return speciesMatch && urlFilterMatch;
-        }
-
-        // If no URL filter, just use the species filter
-        return speciesMatch;
+        const searchMatch = item[key].toLowerCase().includes(searchTerm);
+        return searchMatch && isItemAllowableUnderURLParam(item);
     });
     currentPage = 1;
     renderTable();

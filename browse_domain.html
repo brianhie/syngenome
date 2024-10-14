@@ -33,12 +33,13 @@
       </div>
     </div>
 
+    <script src="assets/js/utils.js"></script>
+    <script src="assets/js/table.js"></script>
     <script src="assets/js/syngenome.js"></script>
-    <script src="data/browse_domain_data.js"></script>
-    <script src="assets/js/search.js"></script>
     <script>
       renderNav('./navbar.html');
-      renderTableBrowse();
+      const jsonUrl = 'DOMAIN_URL';
+      renderTable(jsonUrl);
     </script>
 
   </body>

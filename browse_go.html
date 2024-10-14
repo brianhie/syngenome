@@ -19,6 +19,7 @@
         <thead>
           <tr>
             <th>GO term</th>
+            <th>GO type</th>
             <th>GO ID</th>
             <th>Number of prompts</th>
             <th>Number of generated DNA seqs</th>
@@ -33,12 +34,13 @@
       </div>
     </div>
 
+    <script src="assets/js/utils.js"></script>
+    <script src="assets/js/table.js"></script>
     <script src="assets/js/syngenome.js"></script>
-    <script src="data/browse_go_data.js"></script>
-    <script src="assets/js/search.js"></script>
     <script>
       renderNav('./navbar.html');
-      renderTableBrowse();
+      const jsonUrl = 'GO_URL';
+      renderTable(jsonUrl);
     </script>
 
   </body>

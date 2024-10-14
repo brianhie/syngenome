@@ -1,162 +1,23 @@
 let data = [
-  {
-    "UniProt ID": "P0ABD1",
-    "Name": "Beta-lactamase TEM-1",
-    "species": "Escherichia coli",
-    "Number of prompts": 25,
-    "Number of generated DNA seqs": 125,
-    "Number of generated protein seqs": 105,
-    "domain": ["IPR000001", "IPR000008"],
-    "go": ["DNA repair", "Cell adhesion", "Signal transduction"]
-  },
-  {
-    "UniProt ID": "P0A953",
-    "Name": "DNA gyrase subunit A",
-    "species": "Klebsiella pneumoniae",
-    "Number of prompts": 30,
-    "Number of generated DNA seqs": 150,
-    "Number of generated protein seqs": 128,
-    "domain": ["IPR000010", "IPR000130", "IPR000210"],
-    "go": ["Protein folding", "Lipid metabolism", "Apoptotic process", "Transcription"]
-  },
-  {
-    "UniProt ID": "P0A9M0",
-    "Name": "Lon protease",
-    "species": "Mycobacterium tuberculosis",
-    "Number of prompts": 22,
-    "Number of generated DNA seqs": 110,
-    "Number of generated protein seqs": 95,
-    "domain": ["IPR000276", "IPR000340"],
-    "go": ["Ion transport", "Cell cycle", "Immune response"]
-  },
-  {
-    "UniProt ID": "P0A6P1",
-    "Name": "Elongation factor Tu",
-    "species": "Pseudomonas aeruginosa",
-    "Number of prompts": 35,
-    "Number of generated DNA seqs": 175,
-    "Number of generated protein seqs": 150,
-    "domain": ["IPR000449", "IPR000504", "IPR000719"],
-    "go": ["Oxidation-reduction process", "Carbohydrate metabolism", "Proteolysis", "Cell differentiation"]
-  },
-  {
-    "UniProt ID": "P0A7Z4",
-    "Name": "RNA polymerase sigma factor RpoD",
-    "species": "Staphylococcus aureus",
-    "Number of prompts": 28,
-    "Number of generated DNA seqs": 140,
-    "Number of generated protein seqs": 120,
-    "domain": ["IPR001128", "IPR001245"],
-    "go": ["Biosynthetic process", "Response to stress", "Cellular respiration"]
-  },
-  {
-    "UniProt ID": "P0AGD1",
-    "Name": "Outer membrane protein A",
-    "species": "Bacillus subtilis",
-    "Number of prompts": 20,
-    "Number of generated DNA seqs": 100,
-    "Number of generated protein seqs": 85,
-    "domain": ["IPR001452", "IPR001611"],
-    "go": ["Transport", "Cell division", "Phosphorylation"]
-  },
-  {
-    "UniProt ID": "P0A6F5",
-    "Name": "60 kDa chaperonin",
-    "species": "Salmonella enterica",
-    "Number of prompts": 32,
-    "Number of generated DNA seqs": 160,
-    "Number of generated protein seqs": 135,
-    "domain": ["IPR001680", "IPR001841", "IPR002048"],
-    "go": ["DNA repair", "Cell adhesion", "Signal transduction", "Protein folding"]
-  },
-  {
-    "UniProt ID": "P0A9K9",
-    "Name": "Pyruvate dehydrogenase E1 component",
-    "species": "Clostridium difficile",
-    "Number of prompts": 26,
-    "Number of generated DNA seqs": 130,
-    "Number of generated protein seqs": 110,
-    "domain": ["IPR002110", "IPR002290"],
-    "go": ["Lipid metabolism", "Apoptotic process", "Transcription"]
-  },
-  {
-    "UniProt ID": "P0AEX9",
-    "Name": "Maltose-binding periplasmic protein",
-    "species": "Helicobacter pylori",
-    "Number of prompts": 24,
-    "Number of generated DNA seqs": 120,
-    "Number of generated protein seqs": 102,
-    "domain": ["IPR002885", "IPR000001"],
-    "go": ["Ion transport", "Cell cycle", "Immune response"]
-  },
-  {
-    "UniProt ID": "P0A7R1",
-    "Name": "50S ribosomal protein L15",
-    "species": "Streptococcus pneumoniae",
-    "Number of prompts": 18,
-    "Number of generated DNA seqs": 90,
-    "Number of generated protein seqs": 76,
-    "domain": ["IPR000008", "IPR000010"],
-    "go": ["Oxidation-reduction process", "Carbohydrate metabolism", "Proteolysis"]
-  },
-  {
-    "UniProt ID": "P0ACD4",
-    "Name": "DNA-binding protein HU-alpha",
-    "species": "Bacteriophage T4",
-    "Number of prompts": 21,
-    "Number of generated DNA seqs": 105,
-    "Number of generated protein seqs": 89,
-    "domain": ["IPR000130", "IPR000210"],
-    "go": ["Cell differentiation", "Biosynthetic process", "Response to stress"]
-  },
-  {
-    "UniProt ID": "P0C0V0",
-    "Name": "Recombinase RecA",
-    "species": "Lactobacillus acidophilus",
-    "Number of prompts": 29,
-    "Number of generated DNA seqs": 145,
-    "Number of generated protein seqs": 123,
-    "domain": ["IPR000276", "IPR000340", "IPR000449"],
-    "go": ["Cellular respiration", "Transport", "Cell division"]
-  },
-  {
-    "UniProt ID": "P0ADE4",
-    "Name": "Phosphoenolpyruvate carboxykinase",
-    "species": "Neisseria meningitidis",
-    "Number of prompts": 23,
-    "Number of generated DNA seqs": 115,
-    "Number of generated protein seqs": 98,
-    "domain": ["IPR000504", "IPR000719"],
-    "go": ["Phosphorylation", "DNA repair", "Cell adhesion"]
-  },
-  {
-    "UniProt ID": "P0AGB3",
-    "Name": "Stringent starvation protein A",
-    "species": "Bacteriophage lambda",
-    "Number of prompts": 19,
-    "Number of generated DNA seqs": 95,
-    "Number of generated protein seqs": 80,
-    "domain": ["IPR001128"],
-    "go": ["Signal transduction", "Protein folding", "Lipid metabolism"]
-  },
-  {
-    "UniProt ID": "P0A6Y8",
-    "Name": "Chaperone protein DnaK",
-    "species": "Vibrio cholerae",
-    "Number of prompts": 31,
-    "Number of generated DNA seqs": 155,
-    "Number of generated protein seqs": 132,
-    "domain": ["IPR001245", "IPR001452", "IPR001611", "IPR001680"],
-    "go": ["Apoptotic process", "Transcription", "Ion transport", "Cell cycle"]
-  },
-  {
-    "UniProt ID": "P22995",
-    "Name": "Antitoxin ParD",
-    "species": "Escherichia coli",
-    "Number of prompts": 12,
-    "Number of generated DNA seqs": 67,
-    "Number of generated protein seqs": 134,
-    "domain": ["IPR022789", "IPR038296", "IPR010985"],
-    "go": ["Toxin sequestering activity", "Protein homodimerization activity"]
-  }
+    {
+        "uniprot_id": "P0ABD1",
+        "uniprot_name": "Beta-lactamase TEM-1",
+        "species": "Escherichia coli",
+        "n_prompts": 25,
+        "n_seqs_dna": 125,
+        "n_seqs_prot": 105,
+        "domain": ["IPR000001", "IPR000008"],
+        "go_term": ["DNA repair", "Cell adhesion", "Signal transduction"],
+        "go_id": ["GO:0006281"]
+    },
+    {
+        "UniProt ID": "P0A953",
+        "Name": "DNA gyrase subunit A",
+        "species": "Klebsiella pneumoniae",
+        "Number of prompts": 30,
+        "Number of generated DNA seqs": 150,
+        "Number of generated protein seqs": 128,
+        "domain": ["IPR000010", "IPR000130", "IPR000210"],
+        "go": ["Protein folding", "Lipid metabolism", "Apoptotic process", "Transcription"]
+    }
 ];
