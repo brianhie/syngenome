@@ -123,13 +123,13 @@ function generatePageUniProt(uniprot_id, jsonUrl) {
 
             const row = filteredData[0];
 
-            const species_content = `<a href="/species_entry.html?id=${row.species_id}">${row.species_id}</a>`;
+            const species_content = `<a href="/species.html?id=${row.species_id}">${row.species_id}</a>`;
             const domain_content = row.domain_ids.map(domain => {
-                return `<a href="/uniprot_entry.html?id=${domain}">${domain}</a>`;
+                return `<a href="/uniprot.html?id=${domain}">${domain}</a>`;
             }).join(', ');
             const go_content = zip(row.go_ids, row.go_terms).map(([go_id, go_term]) => {
                 return `
-                    <a href="/go_entry.html?id=${go_id}">
+                    <a href="/go.html?id=${go_id}">
                         ${go_term} (${go_id})
                     </a>
                 `;

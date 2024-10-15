@@ -74,46 +74,46 @@ function renderTable(url, filterTerm) {
 
                     if (key === 'go_id') {
                         const link = document.createElement('a');
-		        link.href = `/go_entry.html?id=${encodeURIComponent(value)}`;
+		        link.href = `/go.html?id=${encodeURIComponent(value)}`;
                         link.textContent = value;
                         cell.appendChild(link);
 
                     } else if (key === 'go_ids') {
                         cell.innerHTML = value.map(go_id => {
-                            return `<a href="/go_entry.html?id=${encodeURIComponent(go_id)}">${go_id}</a>`;
+                            return `<a href="/go.html?id=${encodeURIComponent(go_id)}">${go_id}</a>`;
                         }).join(', ');
 
                     } else if (key === 'go_term') {
                         const link = document.createElement('a');
-		        link.href = `/go_entry.html?id=${encodeURIComponent(value)}`;
+		        link.href = `/go.html?id=${encodeURIComponent(value)}`;
                         link.textContent = value;
                         cell.appendChild(link);
 
                     } else if (key === 'go_terms') {
                         cell.innerHTML = value.map(go_term => {
-                            return `<a href="/go_entry.html?id=${encodeURIComponent(go_term)}">${go_term}</a>`;
+                            return `<a href="/go.html?id=${encodeURIComponent(go_term)}">${go_term}</a>`;
                         }).join(', ');
 
                     } else if (key === 'domain_id') {
                         const link = document.createElement('a');
-		        link.href = `/domain_entry.html?id=${encodeURIComponent(value)}`;
+		        link.href = `/domain.html?id=${encodeURIComponent(value)}`;
                         link.textContent = value;
                         cell.appendChild(link);
 
                     } else if (key === 'domain_ids') {
                         cell.innerHTML = value.map(domain_id => {
-                            return `<a href="/domain_entry.html?id=${encodeURIComponent(domain_id)}">${domain_id}</a>`;
+                            return `<a href="/domain.html?id=${encodeURIComponent(domain_id)}">${domain_id}</a>`;
                         }).join(', ');
 
                     } else if (key === 'species_id') {
                         const link = document.createElement('a');
-		        link.href = `/species_entry.html?id=${encodeURIComponent(value)}`;
+		        link.href = `/species.html?id=${encodeURIComponent(value)}`;
                         link.textContent = value;
                         cell.appendChild(link);
 
                     } else if (key === 'uniprot_id') {
                         const link = document.createElement('a');
-		        link.href = `/uniprot_entry.html?id=${encodeURIComponent(value)}`;
+		        link.href = `/uniprot.html?id=${encodeURIComponent(value)}`;
                         link.textContent = value;
                         cell.appendChild(link);
 
@@ -156,8 +156,8 @@ nextButton.addEventListener('click', () => {
 });
 
 searchInput.addEventListener('input', (e) => {
-    const searchTerm = e.target.value.toLowerCase();
+    const filterTerm = e.target.value.toLowerCase();
     currentPage = 1;
-    renderTable(jsonUrl, searchTerm);
+    renderTable(jsonUrl, filterTerm);
 });
 
