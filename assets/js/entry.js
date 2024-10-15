@@ -17,6 +17,13 @@ function generatePageGO(go_id, jsonUrl) {
             const summaryTable = `
                 <h2>${row.go_term}</h2>
                 <h3>${row.go_id} | ${row.go_type}</h3>
+
+                <form id="downloadForm" class="download-form">
+          	  <div class="download-buttons">
+          	    <button id="download-button" class="download-button">Download prompts and generations</button>
+          	  </div>
+                </form>
+
                 <table class="entry-table">
                     <tr><th>Number of prompts</th><th>${row.n_prompts}</th></tr>
                     <tr><th>Number of DNA sequences</th><th>${row.n_seqs_dna}</th></tr>
@@ -53,6 +60,13 @@ function generatePageDomain(domain_id, jsonUrl) {
 
             const summaryTable = `
                 <h2>${row.domain_id}</h2>
+
+                <form id="downloadForm" class="download-form">
+          	  <div class="download-buttons">
+          	    <button id="download-button" class="download-button">Download prompts and generations</button>
+          	  </div>
+                </form>
+
                 <table class="entry-table">
                     <tr><th>Number of prompts</th><th>${row.n_prompts}</th></tr>
                     <tr><th>Number of DNA sequences</th><th>${row.n_seqs_dna}</th></tr>
@@ -89,6 +103,13 @@ function generatePageSpecies(species_id, jsonUrl) {
 
             const summaryTable = `
                 <h2>${row.species_id}</h2>
+
+                <form id="downloadForm" class="download-form">
+          	  <div class="download-buttons">
+          	    <button id="download-button" class="download-button">Download prompts and generations</button>
+          	  </div>
+                </form>
+
                 <table class="entry-table">
                     <tr><th>Number of prompts</th><th>${row.n_prompts}</th></tr>
                     <tr><th>Number of DNA sequences</th><th>${row.n_seqs_dna}</th></tr>
@@ -138,6 +159,13 @@ function generatePageUniProt(uniprot_id, jsonUrl) {
             const summaryTable = `
                 <h2>${row.uniprot_id}</h2>
                 <h3>${row.uniprot_name}</h3>
+
+                <form id="downloadForm" class="download-form">
+          	  <div class="download-buttons">
+          	    <button id="download-button" class="download-button">Download prompts and generations</button>
+          	  </div>
+                </form>
+
                 <table class="entry-table">
                     <tr><th>Species</th><th>${species_content}</th></tr>
                     <tr><th>Domains</th><th>${domain_content}</th></tr>
@@ -177,6 +205,8 @@ function generatePage(entryType, jsonUrl) {
         if (id) {
             id = decodeURIComponent(id);
             generatePageFunc(id, jsonUrl);
+
+            // TODO: ADD DOWNLOAD LOGIC HERE.
         } else {
             document.getElementById('content').innerHTML = '<p>No entry found! Please check the URL.</p>';
         }
