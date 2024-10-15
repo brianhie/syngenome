@@ -8,7 +8,6 @@ const searchInput = document.getElementById('searchInput');
 
 const itemsPerPage = 5;
 let currentPage = 1;
-let newPage = 'search';
 
 // Extract key and value from URL parameters.
 const urlParams = new URLSearchParams(window.location.search);

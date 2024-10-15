@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SynGenome | Browse species</title>
-    <link rel="stylesheet" href="syngenome.css">
+    <title>SynGenome | Browse GO terms</title>
+    <link rel="stylesheet" href="/syngenome.css">
   </head>
 
   <body>
@@ -12,18 +12,20 @@
     
     <div class="data-table-container">
 
-      <h1 class="browse-header">Browse by species</h1>
+      <div id="loading" style="display: none;">
+        <div class="spinner"></div>
+        <div class="loading-text">Loading data, please wait...</div>
+      </div>
 
-      <input type="text" id="searchInput" class="data-table-search" placeholder="Filter by species name...">
-
-      <p class="browse-subtitle">
-	Showing species with X or more prompts.
-      </p>
+      <h1 class="browse-header">Browse by GO term</h1>
       
+      <input type="text" id="searchInput" class="data-table-search" placeholder="Filter by GO term...">
       <table id="dataTable" class="data-table">
         <thead>
           <tr>
-            <th>Species</th>
+            <th>GO term</th>
+            <th>GO type</th>
+            <th>GO ID</th>
             <th>Number of prompts</th>
             <th>Number of generated DNA seqs</th>
             <th>Number of generated protein seqs</th>
@@ -42,8 +44,8 @@
     <script src="/assets/js/syngenome.js"></script>
     <script src="/assets/js/urls.js"></script>
     <script>
-      renderNav('./navbar.html');
-      renderTable(speciesUrl);
+      renderNav('/navbar.html');
+      renderTable(goUrl);
     </script>
 
   </body>

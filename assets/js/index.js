@@ -40,15 +40,15 @@ const speciesButton = document.getElementById('species-button');
 // Add click event listeners to each button
 goTermButton.addEventListener('click', (e) => {
     e.preventDefault();
-    window.location.href = '/browse_go.html';
+    window.location.href = '/browse/go.html';
 });
 
 domainButton.addEventListener('click', (e) => {
     e.preventDefault();
-    window.location.href = '/browse_domain.html';
+    window.location.href = '/browse/domain.html';
 });
 
 speciesButton.addEventListener('click', (e) => {
     e.preventDefault();
-    window.location.href = '/browse_species.html';
+    window.location.href = '/browse/species.html';
 });
