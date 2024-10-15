@@ -37,10 +37,16 @@
 	  <button id="species-button" class="browse-button">Browse by species</button>
 	</div>
       </form>
+      
+      <footer id="footer"></footer>
 
-    <script src="/assets/js/syngenome.js"></script>
-    <script> renderNav('./navbar.html'); </script>
-    <script src="/assets/js/index.js"></script>
-
+      <script src="/assets/js/syngenome.js"></script>
+      <script src="/assets/js/index.js"></script>
+      <script>
+        renderNav('/navbar.html');
+        fetch('/footer.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('footer').innerHTML = data);
+      </script>
   </body>
 </html>
