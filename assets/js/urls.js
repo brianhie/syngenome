@@ -5,4 +5,3 @@ const domainUrl = 'https://gist.githubusercontent.com/brianhie/68b04785817b4da37
 const speciesUrl = 'https://gist.githubusercontent.com/brianhie/b580bf2dcd7223a88cd8f3f4cde0c7f9/raw/e0cfa9022b937215f1d477310a66fdb6afd2bb03/syngenome_test_species.json';
 
 const uniprotUrl = 'https://gist.githubusercontent.com/brianhie/c25b53d61b5fac1e3e2f417401856fb7/raw/de115598d262e1ce477f35b252763840454a1f40/syngenome_test_uniprot.json';
-

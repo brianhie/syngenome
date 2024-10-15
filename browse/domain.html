@@ -12,6 +12,11 @@
     
     <div class="data-table-container">
 
+      <div id="loading" style="display: none;">
+        <div class="spinner"></div>
+        <div class="loading-text">Loading data, please wait...</div>
+      </div>
+
       <h1 class="browse-header">Browse by InterPro domain</h1>
       
       <input type="text" id="searchInput" class="data-table-search" placeholder="Filter by domain ID...">
@@ -34,9 +39,9 @@
     </div>
 
     <script src="/assets/js/utils.js"></script>
+    <script src="/assets/js/urls.js"></script>
     <script src="/assets/js/table.js"></script>
     <script src="/assets/js/syngenome.js"></script>
-    <script src="/assets/js/urls.js"></script>
     <script>
       renderNav('/navbar.html');
       renderTable(domainUrl);

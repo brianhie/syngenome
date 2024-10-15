@@ -150,11 +150,11 @@ body {
 }
 
 .navbar-logo img {
-    height: 50px;
+    height: 70px;
 }
 
 .navbar-name {
-    font-family: "Nanum Myeongjo", "Garamond", serif;
+    font-family: "Roboto", "Arial", sans-serif;
     font-weight: 700;
     font-size: 22px;
     padding-left: 12px;

@@ -42,7 +42,7 @@ function updatePaginationButtons(filteredData) {
 }
 
 function renderTable(url, filterTerm) {
-    //showLoading();
+    showLoading();
 
     jsonUrl = url;
 
@@ -58,8 +58,7 @@ function renderTable(url, filterTerm) {
                     return isItemAllowableUnderURLParam(item);
                 })
                 .sort(item => -item.n_prompts);
-        })
-        .finally(() => {
+
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
             const pageData = filteredData.slice(startIndex, endIndex);
@@ -135,8 +134,9 @@ function renderTable(url, filterTerm) {
                 tableBody.appendChild(row);
             });
             updatePaginationButtons(filteredData);
-
-            //hideLoading();
+        })
+        .finally(() => {
+            hideLoading();
         })
 }
 

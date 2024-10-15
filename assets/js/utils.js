@@ -26,3 +26,16 @@ function fetchAndParseJSON(url) {
             console.error('Error fetching or parsing JSON:', error);
         });
 }
+
+function downloadFile(url, fileName) {
+    // Create a temporary anchor element and programmatically click it.
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName || 'download'; // If fileName is not provided, the original filename will be used.
+    link.target = '_blank'; // Open link in new page.
+    link.rel = 'noopener noreferrer';
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}

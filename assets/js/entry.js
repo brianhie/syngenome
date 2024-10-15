@@ -32,6 +32,14 @@ function generatePageGO(go_id, jsonUrl) {
             `;
 
             document.getElementById('content').innerHTML = summaryTable;
+
+            const downloadButton = document.getElementById('download-button');
+            downloadButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                showLoading();
+                downloadFile('https://gist.githubusercontent.com/brianhie/64bbb0402ba0e0a86f1cc978b0be9723/raw/ae9510b8026641814ddeff606f3537b33d4e9a7c/syngenome_test_chunk.csv', 'syngenome_download.csv');
+                hideLoading();
+            });
         })
         .catch(error => {
             console.error('Error:', error);
@@ -75,6 +83,14 @@ function generatePageDomain(domain_id, jsonUrl) {
             `;
 
             document.getElementById('content').innerHTML = summaryTable;
+
+            const downloadButton = document.getElementById('download-button');
+            downloadButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                showLoading();
+                downloadFile('https://gist.githubusercontent.com/brianhie/64bbb0402ba0e0a86f1cc978b0be9723/raw/ae9510b8026641814ddeff606f3537b33d4e9a7c/syngenome_test_chunk.csv', 'syngenome_download.csv');
+                hideLoading();
+            });
         })
         .catch(error => {
             console.error('Error:', error);
@@ -118,6 +134,14 @@ function generatePageSpecies(species_id, jsonUrl) {
             `;
 
             document.getElementById('content').innerHTML = summaryTable;
+
+            const downloadButton = document.getElementById('download-button');
+            downloadButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                showLoading();
+                downloadFile('https://gist.githubusercontent.com/brianhie/64bbb0402ba0e0a86f1cc978b0be9723/raw/ae9510b8026641814ddeff606f3537b33d4e9a7c/syngenome_test_chunk.csv', 'syngenome_download.csv');
+                hideLoading();
+            });
         })
         .catch(error => {
             console.error('Error:', error);
@@ -177,6 +201,14 @@ function generatePageUniProt(uniprot_id, jsonUrl) {
             `;
 
             document.getElementById('content').innerHTML = summaryTable;
+
+            const downloadButton = document.getElementById('download-button');
+            downloadButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                showLoading();
+                downloadFile('https://gist.githubusercontent.com/brianhie/64bbb0402ba0e0a86f1cc978b0be9723/raw/ae9510b8026641814ddeff606f3537b33d4e9a7c/syngenome_test_chunk.csv', 'syngenome_download.csv');
+                hideLoading();
+            });
         })
         .catch(error => {
             console.error('Error:', error);
