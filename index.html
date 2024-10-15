@@ -4,15 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SynGenome</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="syngenome.css">
   </head>
 
   <body>
     <div id="navbar"></div>
 
-    <div class="container">
+    <div class="index-container" style="text-align: center;">
 
-      <h1 class="title">SynGenome</h1>
+      <div class="title">
+        <img src="/images/logo_dna_green.svg">
+        <h1>SynGenome</h1>
+      </div>
 
       <form id="searchForm" class="search-form">
         <div class="search-input-group">
@@ -20,7 +26,7 @@
           <button type="submit" class="search-button">Search</button>
         </div>
 
-        <div class="example-queries" id="exampleQueries"></div>
+        <div class="example-queries" id="exampleQueries">Examples:</div>
 
       </form>
 

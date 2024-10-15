@@ -25,9 +25,9 @@ function generatePageGO(go_id, jsonUrl) {
                 </form>
 
                 <table class="entry-table">
-                    <tr><th>Number of prompts</th><th>${row.n_prompts}</th></tr>
-                    <tr><th>Number of DNA sequences</th><th>${row.n_seqs_dna}</th></tr>
-                    <tr><th>Number of protein sequences</th><th>${row.n_seqs_prot}</th></tr>
+                    <tr><th>Number of prompts</th><td>${row.n_prompts}</td></tr>
+                    <tr><th>Number of DNA sequences</th><td>${row.n_seqs_dna}</td></tr>
+                    <tr><th>Number of protein sequences</th><td>${row.n_seqs_prot}</td></tr>
                 </table>
             `;
 
@@ -68,6 +68,7 @@ function generatePageDomain(domain_id, jsonUrl) {
 
             const summaryTable = `
                 <h2>${row.domain_id}</h2>
+                <h3>${row.domain_name}</h3>
 
                 <form id="downloadForm" class="download-form">
           	  <div class="download-buttons">
@@ -76,9 +77,9 @@ function generatePageDomain(domain_id, jsonUrl) {
                 </form>
 
                 <table class="entry-table">
-                    <tr><th>Number of prompts</th><th>${row.n_prompts}</th></tr>
-                    <tr><th>Number of DNA sequences</th><th>${row.n_seqs_dna}</th></tr>
-                    <tr><th>Number of protein sequences</th><th>${row.n_seqs_prot}</th></tr>
+                    <tr><th>Number of prompts</th><td>${row.n_prompts}</td></tr>
+                    <tr><th>Number of DNA sequences</th><td>${row.n_seqs_dna}</td></tr>
+                    <tr><th>Number of protein sequences</th><td>${row.n_seqs_prot}</td></tr>
                 </table>
             `;
 
@@ -119,6 +120,7 @@ function generatePageSpecies(species_id, jsonUrl) {
 
             const summaryTable = `
                 <h2>${row.species_id}</h2>
+                <h3>Species</h3>
 
                 <form id="downloadForm" class="download-form">
           	  <div class="download-buttons">
@@ -127,9 +129,9 @@ function generatePageSpecies(species_id, jsonUrl) {
                 </form>
 
                 <table class="entry-table">
-                    <tr><th>Number of prompts</th><th>${row.n_prompts}</th></tr>
-                    <tr><th>Number of DNA sequences</th><th>${row.n_seqs_dna}</th></tr>
-                    <tr><th>Number of protein sequences</th><th>${row.n_seqs_prot}</th></tr>
+                    <tr><th>Number of prompts</th><td>${row.n_prompts}</td></tr>
+                    <tr><th>Number of DNA sequences</th><td>${row.n_seqs_dna}</td></tr>
+                    <tr><th>Number of protein sequences</th><td>${row.n_seqs_prot}</td></tr>
                 </table>
             `;
 
@@ -170,14 +172,10 @@ function generatePageUniProt(uniprot_id, jsonUrl) {
 
             const species_content = `<a href="/species.html?id=${row.species_id}">${row.species_id}</a>`;
             const domain_content = row.domain_ids.map(domain => {
-                return `<a href="/uniprot.html?id=${domain}">${domain}</a>`;
+                return `<a href="/domain.html?id=${domain}">${domain}</a>`;
             }).join(', ');
             const go_content = zip(row.go_ids, row.go_terms).map(([go_id, go_term]) => {
-                return `
-                    <a href="/go.html?id=${go_id}">
-                        ${go_term} (${go_id})
-                    </a>
-                `;
+                return `<a href="/go.html?id=${go_id}">${go_term} (${go_id})</a>`;
             }).join(', ');
 
             const summaryTable = `
@@ -191,12 +189,12 @@ function generatePageUniProt(uniprot_id, jsonUrl) {
                 </form>
 
                 <table class="entry-table">
-                    <tr><th>Species</th><th>${species_content}</th></tr>
-                    <tr><th>Domains</th><th>${domain_content}</th></tr>
-                    <tr><th>GO terms</th><th>${go_content}</th></tr>
-                    <tr><th>Number of prompts</th><th>${row.n_prompts}</th></tr>
-                    <tr><th>Number of DNA sequences</th><th>${row.n_seqs_dna}</th></tr>
-                    <tr><th>Number of protein sequences</th><th>${row.n_seqs_prot}</th></tr>
+                    <tr><th>Species</th><td>${species_content}</td></tr>
+                    <tr><th>Domains</th><td>${domain_content}</td></tr>
+                    <tr><th>GO terms</th><td>${go_content}</td></tr>
+                    <tr><th>Number of prompts</th><td>${row.n_prompts}</td></tr>
+                    <tr><th>Number of DNA sequences</th><td>${row.n_seqs_dna}</td></tr>
+                    <tr><th>Number of protein sequences</th><td>${row.n_seqs_prot}</td></tr>
                 </table>
             `;
 

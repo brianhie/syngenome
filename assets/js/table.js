@@ -6,7 +6,7 @@ const prevButton = document.getElementById('prevButton');
 const nextButton = document.getElementById('nextButton');
 const searchInput = document.getElementById('searchInput');
 
-const itemsPerPage = 5;
+let itemsPerPage = 5;
 let currentPage = 1;
 
 // Extract key and value from URL parameters.
@@ -41,8 +41,10 @@ function updatePaginationButtons(filteredData) {
     nextButton.disabled = currentPage === Math.ceil(filteredData.length / itemsPerPage);
 }
 
-function renderTable(url, filterTerm) {
-    showLoading();
+function renderTable(url, filterTerm, noLoading) {
+    if (!noLoading) {
+        showLoading();
+    }
 
     jsonUrl = url;
 
@@ -136,27 +138,28 @@ function renderTable(url, filterTerm) {
             updatePaginationButtons(filteredData);
         })
         .finally(() => {
-            hideLoading();
+            if (!noLoading) {
+                hideLoading();
+            }
         })
 }
 
 prevButton.addEventListener('click', () => {
     if (currentPage > 1) {
         currentPage--;
-        renderTable(jsonUrl);
+        renderTable(jsonUrl, null, true);
     }
 });
 
 nextButton.addEventListener('click', () => {
     if (currentPage < Math.ceil(filteredData.length / itemsPerPage)) {
         currentPage++;
-        renderTable(jsonUrl);
+        renderTable(jsonUrl, null, true);
     }
 });
 
 searchInput.addEventListener('input', (e) => {
     const filterTerm = e.target.value.toLowerCase();
     currentPage = 1;
-    renderTable(jsonUrl, filterTerm);
+    renderTable(jsonUrl, filterTerm, true);
 });
-

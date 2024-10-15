@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SynGenome</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="syngenome.css">
   </head>
 
@@ -17,9 +20,16 @@
         <div class="loading-text">Loading data, please wait...</div>
       </div>
 
-      <div id="content"></div>
+      <div id="content" class="entry-content"></div>
 
-      <input type="text" id="searchInput" class="data-table-search" placeholder="Filter by UniProt ID...">
+      <div class="data-table-header">
+        <h3>UniProt entries</h3>
+      </div>
+           
+      <div class="data-table-search-div">
+        <input type="text" id="searchInput" class="data-table-search" placeholder="Filter by UniProt ID...">
+      </div>
+
       <table id="dataTable" class="data-table">
         <thead>
           <tr>
@@ -29,9 +39,9 @@
             <th>Domains</th>
             <th>GO terms</th>
             <th>GO IDs</th>
-            <th>Number of prompts</th>
-            <th>Number of generated DNA seqs</th>
-            <th>Number of generated protein seqs</th>
+            <th>Prompts</th>
+            <th>Generated DNA seqs</th>
+            <th>Generated protein seqs</th>
           </tr>
         </thead>
         <tbody></tbody>

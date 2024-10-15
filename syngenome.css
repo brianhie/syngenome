@@ -1,21 +1,43 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: white;
+    font-family: "Roboto Mono", monospace;
+    background-color: #f9f6ee;
     margin: 0;
     padding: 0;
 }
 
-.container {
+a {
+    color: black;
+}
+
+.index-container {
     max-width: 800px;
-    margin: 80px auto;
+    margin: 4rem auto;
     padding: 40px;
-    text-align: center;
+    text-align: left;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 5rem auto;
+    padding: 40px;
+    text-align: left;
 }
 
 .title {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+}
+
+.title img {
+    height: 100px;
+}
+
+.title h1{
+    font-size: 5rem;
+    margin-left: 20px;
+    font-weight: 300;
+    /*font-family: "Space Mono", monospace;*/
 }
 
 .search-form {
@@ -32,30 +54,34 @@ body {
 .search-input {
     flex-grow: 1;
     padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
+    border: 1px solid #888;
     border-radius: 4px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 14px;
+    font-style: italic;
 }
 
 .search-button {
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #2563eb;
+    background-color: #494540;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-family: 'Roboto Mono', monospace;
 }
 
 .search-button:hover {
-    background-color: #1d4ed8;
+    background-color: #1c1b1a;
 }
 
 .download-form {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding-bottom: 20px;
+    padding: 0;
+    margin: 0;
 }
 
 .download-input-group {
@@ -67,41 +93,55 @@ body {
     flex-grow: 1;
     padding: 10px;
     font-size: 16px;
-    border: 1px solid #ccc;
+    border: 1px solid #888;
     border-radius: 4px;
 }
 
 .download-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #2563eb;
-    color: white;
-    border: none;
+    font-style: italic;
+    font-family: "Roboto Mono", monospace;
+    font-weight: 500;
+    margin-top: 15px;
+    padding: 15px 25px;
+    font-size: 18px;
+    background-color: #ddd8d1;
+    color: black;
+    border: 1px solid #888;
     border-radius: 4px;
     cursor: pointer;
 }
 
 .download-button:hover {
-    background-color: #1d4ed8;
+    text-decoration: underline;
 }
 
 .example-queries {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    align-items: center;
+    font-size: 14px;
 }
 
 .example-query {
     padding: 5px 10px;
-    font-size: 14px;
-    background-color: #f3f4f6;
-    border: 1px solid #d1d5db;
+    background-color: #ddd8d1;
+    border: 0px;
     border-radius: 4px;
     cursor: pointer;
+    font-family: "Roboto Mono", monospace;
+    font-size: 12px;
+    font-style: italic;
 }
 
 .example-query:hover {
-    background-color: #e5e7eb;
+    background-color: #b9b5b0;
+}
+
+.browse-header {
+    font-weight: 700;
+    font-size: 40px;
+    margin-bottom: 50px;
 }
 
 .browse-buttons {
@@ -113,36 +153,39 @@ body {
 
 .browse-button {
     flex: 1;
-    padding: 10px;
+    padding: 15px;
+    font-family: "Roboto Mono", monospace;
     font-size: 16px;
-    background-color: #4a90e2;
-    color: white;
-    border: none;
+    font-weight: 700;
+    background-color:  #f9f6ee; /*#ddd8d1;*/
+    color: black;
+    border: 1px solid #888;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 .browse-button:hover {
-    background-color: #357abd;
+    /*background-color: #357abd;*/
+    text-decoration: underline;
 }
 
 .navbar {
     overflow: hidden;
-    background-color: rgba(255, 255, 255, 0.9);
-    position: fixed;
+    /*background-color: #e3dacdaa;*/
+    color: black;
+    position: absolute;
     top: 0px;
     width: 100%;
     font-size: 16px;
-    font-family: "Roboto", "Arial", sans-serif;
     font-weight: 400;
-    padding: 12px 0 12px 0;
+    padding: 4px 0 6px 0;
     display: flex;
     justify-content: space-between;
 }
 
 .navbar-logo {
-    margin: 10px 0 0px 24px;
+    margin: 0px 0 0px 15px;
     display: flex;
     align-items: center;
     text-decoration: none;
@@ -150,20 +193,23 @@ body {
 }
 
 .navbar-logo img {
-    height: 70px;
+    height: 56px;
+    padding: 8px 0 8px;
 }
 
 .navbar-name {
-    font-family: "Roboto", "Arial", sans-serif;
-    font-weight: 700;
-    font-size: 22px;
+    /*font-family: "Space Mono", monospace;*/
+    font-family: "Roboto Mono", monospace;
+    font-weight: 300;
+    font-size: 35px;
     padding-left: 12px;
+    margin: 0;
 }
 
 .navbar-list {
     list-style-type: none;
     margin: 0;
-    padding: 0 40px 0 0;
+    padding: 0 10px 0 0;
     display: flex;
     justify-content: flex-end;
 }
@@ -184,9 +230,8 @@ body {
 .navbar-list li a {
     color: black;
     text-decoration: none;
-    font-family: "Roboto", "Arial", sans-serif;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .navbar-list li a:hover {
@@ -238,7 +283,6 @@ body {
     display: block;
     text-decoration: none;
     color: black;
-    font-family: "Roboto", "Arial", sans-serif;
     font-weight: 500;
     font-size: 18px;
     padding: 20px 15px;
@@ -254,26 +298,42 @@ body {
     opacity: 1;
 }
 
+.data-table-header h3 {
+    margin: 40px 0 12px;
+    font-size: 25px;
+    font-weight: 500;
+}
+
 .data-table-container {
-    max-width: 800px;
-    margin: 140px auto;
-    background-color: white;
+    max-width: 1000px;
+    margin: 5rem auto;
+    /*background-color: white;*/
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    /*box-shadow: 0 0 10px rgba(0,0,0,0.1);*/
+}
+
+.data-table-search-div {
+    max-width: 500px;
+    margin: 0;
 }
 
 .data-table-search {
     width: 100%;
-    padding: 10px;
+    padding: 10px 15px;
     margin-bottom: 20px;
-    border: 1px solid #ddd;
+    border: 1px solid #888;
     border-radius: 4px;
+    font-family: "Roboto Mono", monospace;
+    font-size: 14px;
+    font-style: italic;
+    background-color: white;
 }
 
 .data-table {
     width: 100%;
     border-collapse: collapse;
+    font-size: 14px;
 }
 
 .data-table th, .data-table td {
@@ -283,7 +343,10 @@ body {
 }
 
 .data-table th {
-    background-color: #f2f2f2;
+    /*background-color: #f2f2f2;*/
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    font-weight: 700;
 }
 
 .data-table-pagination {
@@ -294,12 +357,14 @@ body {
 
 .data-table-pagination button {
     margin-left: 10px;
-    padding: 5px 10px;
-    background-color: #4CAF50;
+    padding: 5px 12px;
+    background-color: #494540;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-family: "Roboto Mono", monospace;
+    font-size: 14px;
 }
 
 .data-table-pagination button:disabled {
@@ -307,23 +372,42 @@ body {
     cursor: not-allowed;
 }
 
+.entry-content h2 {
+    font-size: 40px;
+    margin: 0;
+}
+
+.entry-content h3 {
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    margin: 0 0 40px;
+}
+
 .entry-table {
     border-collapse: collapse;
-    width: 100%;
-    margin-bottom: 20px;
+    max-width: 100%;
+    margin: 0px 0 25px;
     table-layout: fixed;
+    border-spacing: 0 12px;
+    border-collapse: separate;
 }
 
 .entry-table th, .entry-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
+    border: 0px solid #ddd;
     word-wrap: break-word;
     overflow-wrap: break-word;
 }
 
 .entry-table th {
-    background-color: #f2f2f2;
+    text-align: right;
+    font-weight: 500;
+    padding: 6px 15px 6px 0px;
+    border-right: 1px solid black;
+}
+
+.entry-table td {
+    padding: 6px 0px 6px 13px;
 }
 
 .prompt-section {
@@ -353,7 +437,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color:  #f9f6eedd;
     z-index: 9999;
 }
 
@@ -364,7 +448,7 @@ body {
     width: 50px;
     height: 50px;
     border: 3px solid #f3f3f3;
-    border-top: 3px solid #3498db;
+    border-top: 3px solid black;
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }

@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SynGenome | Browse species</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/syngenome.css">
   </head>
 
@@ -19,13 +22,11 @@
 
       <h1 class="browse-header">Browse by species</h1>
 
-      <input type="text" id="searchInput" class="data-table-search" placeholder="Filter by species name...">
+      <div class="data-table-search-div">
+        <input type="text" id="searchInput" class="data-table-search" placeholder="Filter by species name...">
+      </div>
 
-      <p class="browse-subtitle">
-	Showing species with X or more prompts.
-      </p>
-      
-      <table id="dataTable" class="data-table">
+      <table id="dataTable" class="data-table" style="font-size: 16px;">
         <thead>
           <tr>
             <th>Species</th>
@@ -48,6 +49,7 @@
     <script src="/assets/js/syngenome.js"></script>
     <script>
       renderNav('/navbar.html');
+      itemsPerPage = 8;
       renderTable(speciesUrl);
     </script>
 
