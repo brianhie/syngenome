@@ -1,8 +1,12 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
 body {
     font-family: "Roboto Mono", monospace;
     background-color: #f9f6ee;
-    margin: 0;
-    padding: 0;
 }
 
 a {
@@ -10,10 +14,12 @@ a {
 }
 
 .index-container {
+    width: 100%;
     max-width: 800px;
-    margin: 7.5rem auto;
     padding: 40px;
     text-align: left;
+    margin: 7rem auto;
+    box-sizing: border-box;
 }
 
 .container {
@@ -25,12 +31,14 @@ a {
     overflow-x: auto;
     background-color: #fdfcfa;
     border-radius: 0px;
+    box-sizing: border-box;
 }
 
 .title {
     display: flex;
     justify-content: center;
     align-items: center;    
+    width: 100%;
 }
 
 .title img {
@@ -42,6 +50,17 @@ a {
     margin: 0 20px 0;
     font-weight: 300;
     /*font-family: "Space Mono", monospace;*/
+}
+
+@media (max-width: 700px) {
+    .title img {
+        height: 50px;
+    }
+    
+    .title h1 {
+        font-size: 3rem;
+        margin: 0 10px 0;
+    }
 }
 
 .subtitle {
@@ -83,6 +102,16 @@ a {
 
 .search-button:hover {
     background-color: #1c1b1a;
+}
+
+@media (max-width: 700px) {
+    .search-input {
+        font-size: 14px;
+    }
+
+    .search-button {
+        font-size: 14px;
+    }
 }
 
 .download-form {
@@ -182,6 +211,12 @@ a {
     text-decoration: underline;
 }
 
+@media (max-width: 700px) {
+    .browse-button {
+        font-size: 15px;
+    }
+}
+
 .navbar {
     overflow: hidden;
     /*background-color: #e3dacdaa;*/
@@ -251,11 +286,11 @@ a {
 }
 
 .menu-container {
-    position: fixed;
+    position: absolute;
     top: 0;
     right: 0;
     padding: 20px;
-    z-index: 1;
+    z-index: 99999;
 }
 
 @media (min-width: 768px) {
@@ -279,7 +314,7 @@ a {
 
 .dropdown-content {
     display: none;
-    position: absolute;
+    position: fixed;
     right: 20px;
     background-color: white;
     min-width: 160px;
@@ -289,6 +324,7 @@ a {
     overflow: hidden;
     opacity: 0;
     padding: 20px;
+    z-index: 99999;
 }
 
 .dropdown-content a {
@@ -324,6 +360,7 @@ a {
     box-shadow: 0 0px 12px rgba(0, 0, 0, 0.1);
     overflow-x: auto;
     background-color: #fdfcfa;
+    box-sizing: border-box;
 }
 
 .data-table-search-div {
