@@ -18,17 +18,19 @@ function generatePageGO(go_id, jsonUrl) {
                 <h2>${row.go_term}</h2>
                 <h3>${row.go_id} | ${row.go_type}</h3>
 
+                <table class="entry-table">
+                    <tr><th>Number of prompts</th><td>${row.n_prompts}</td></tr>
+                    <tr><th>Number of DNA sequences</th><td>${row.n_seqs_dna}</td></tr>
+                    <tr><th>Number of protein sequences</th><td>${row.n_seqs_prot}</td></tr>
+                </table>
+
                 <form id="downloadForm" class="download-form">
           	  <div class="download-buttons">
           	    <button id="download-button" class="download-button">Download prompts and generations</button>
           	  </div>
                 </form>
 
-                <table class="entry-table">
-                    <tr><th>Number of prompts</th><td>${row.n_prompts}</td></tr>
-                    <tr><th>Number of DNA sequences</th><td>${row.n_seqs_dna}</td></tr>
-                    <tr><th>Number of protein sequences</th><td>${row.n_seqs_prot}</td></tr>
-                </table>
+                <div class="line"></div>
             `;
 
             document.getElementById('content').innerHTML = summaryTable;
@@ -70,17 +72,19 @@ function generatePageDomain(domain_id, jsonUrl) {
                 <h2>${row.domain_id}</h2>
                 <h3>${row.domain_name}</h3>
 
+                <table class="entry-table">
+                    <tr><th>Number of prompts</th><td>${row.n_prompts}</td></tr>
+                    <tr><th>Number of DNA sequences</th><td>${row.n_seqs_dna}</td></tr>
+                    <tr><th>Number of protein sequences</th><td>${row.n_seqs_prot}</td></tr>
+                </table>
+
                 <form id="downloadForm" class="download-form">
           	  <div class="download-buttons">
           	    <button id="download-button" class="download-button">Download prompts and generations</button>
           	  </div>
                 </form>
 
-                <table class="entry-table">
-                    <tr><th>Number of prompts</th><td>${row.n_prompts}</td></tr>
-                    <tr><th>Number of DNA sequences</th><td>${row.n_seqs_dna}</td></tr>
-                    <tr><th>Number of protein sequences</th><td>${row.n_seqs_prot}</td></tr>
-                </table>
+                <div class="line"></div>
             `;
 
             document.getElementById('content').innerHTML = summaryTable;
@@ -122,17 +126,19 @@ function generatePageSpecies(species_id, jsonUrl) {
                 <h2>${row.species_id}</h2>
                 <h3>Species</h3>
 
+                <table class="entry-table">
+                    <tr><th>Number of prompts</th><td>${row.n_prompts}</td></tr>
+                    <tr><th>Number of DNA sequences</th><td>${row.n_seqs_dna}</td></tr>
+                    <tr><th>Number of protein sequences</th><td>${row.n_seqs_prot}</td></tr>
+                </table>
+
                 <form id="downloadForm" class="download-form">
           	  <div class="download-buttons">
           	    <button id="download-button" class="download-button">Download prompts and generations</button>
           	  </div>
                 </form>
 
-                <table class="entry-table">
-                    <tr><th>Number of prompts</th><td>${row.n_prompts}</td></tr>
-                    <tr><th>Number of DNA sequences</th><td>${row.n_seqs_dna}</td></tr>
-                    <tr><th>Number of protein sequences</th><td>${row.n_seqs_prot}</td></tr>
-                </table>
+                <div class="line"></div>
             `;
 
             document.getElementById('content').innerHTML = summaryTable;
@@ -182,12 +188,6 @@ function generatePageUniProt(uniprot_id, jsonUrl) {
                 <h2>${row.uniprot_id}</h2>
                 <h3>${row.uniprot_name}</h3>
 
-                <form id="downloadForm" class="download-form">
-          	  <div class="download-buttons">
-          	    <button id="download-button" class="download-button">Download prompts and generations</button>
-          	  </div>
-                </form>
-
                 <table class="entry-table">
                     <tr><th>Species</th><td>${species_content}</td></tr>
                     <tr><th>Domains</th><td>${domain_content}</td></tr>
@@ -196,6 +196,12 @@ function generatePageUniProt(uniprot_id, jsonUrl) {
                     <tr><th>Number of DNA sequences</th><td>${row.n_seqs_dna}</td></tr>
                     <tr><th>Number of protein sequences</th><td>${row.n_seqs_prot}</td></tr>
                 </table>
+
+                <form id="downloadForm" class="download-form">
+          	  <div class="download-buttons">
+          	    <button id="download-button" class="download-button">Download prompts and generations</button>
+          	  </div>
+                </form>
             `;
 
             document.getElementById('content').innerHTML = summaryTable;

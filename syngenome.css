@@ -11,16 +11,20 @@ a {
 
 .index-container {
     max-width: 800px;
-    margin: 4rem auto;
+    margin: 7.5rem auto;
     padding: 40px;
     text-align: left;
 }
 
 .container {
-    max-width: 1000px;
-    margin: 5rem auto;
+    max-width: 1050px;
+    margin: 7rem auto;
     padding: 40px;
     text-align: left;
+    box-shadow: 0 0px 12px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+    background-color: #fdfcfa;
+    border-radius: 0px;
 }
 
 .title {
@@ -33,11 +37,16 @@ a {
     height: 100px;
 }
 
-.title h1{
+.title h1 {
     font-size: 5rem;
-    margin-left: 20px;
+    margin: 0 20px 0;
     font-weight: 300;
     /*font-family: "Space Mono", monospace;*/
+}
+
+.subtitle {
+    margin: 10px 0 20px;
+    font-size: 20px;
 }
 
 .search-form {
@@ -81,7 +90,7 @@ a {
     flex-direction: column;
     gap: 10px;
     padding: 0;
-    margin: 0;
+    margin: 0 0 20px;
 }
 
 .download-input-group {
@@ -100,10 +109,10 @@ a {
 .download-button {
     font-style: italic;
     font-family: "Roboto Mono", monospace;
-    font-weight: 500;
-    margin-top: 15px;
+    font-weight: 700;
+    margin: 0 0 20px;
     padding: 15px 25px;
-    font-size: 18px;
+    font-size: 16px;
     background-color: #ddd8d1;
     color: black;
     border: 1px solid #888;
@@ -139,9 +148,11 @@ a {
 }
 
 .browse-header {
-    font-weight: 700;
+    font-weight: 300;
+    font-style: italic;
     font-size: 40px;
-    margin-bottom: 50px;
+    margin: 0 0 30px;
+    color: #49403b;
 }
 
 .browse-buttons {
@@ -153,16 +164,17 @@ a {
 
 .browse-button {
     flex: 1;
-    padding: 15px;
+    padding: 16px;
     font-family: "Roboto Mono", monospace;
-    font-size: 16px;
-    font-weight: 700;
-    background-color:  #f9f6ee; /*#ddd8d1;*/
+    font-size: 17px;
+    font-weight: 400;
+    font-style: italic;
+    background-color: #fdfcfa; /*#ddd8d1;*/
     color: black;
-    border: 1px solid #888;
+    border: 1px solid #aaa;
+    box-shadow: 0 0px 3px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s;
 }
 
 .browse-button:hover {
@@ -299,18 +311,19 @@ a {
 }
 
 .data-table-header h3 {
-    margin: 40px 0 12px;
+    margin: 25px 0 20px;
     font-size: 25px;
     font-weight: 500;
 }
 
 .data-table-container {
-    max-width: 1000px;
-    margin: 5rem auto;
-    /*background-color: white;*/
-    padding: 20px;
-    border-radius: 8px;
-    /*box-shadow: 0 0 10px rgba(0,0,0,0.1);*/
+    max-width: 1050px;
+    margin: 7rem auto;
+    padding: 40px;
+    border-radius: 0px;
+    box-shadow: 0 0px 12px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+    background-color: #fdfcfa;
 }
 
 .data-table-search-div {
@@ -372,22 +385,27 @@ a {
     cursor: not-allowed;
 }
 
+.line {
+    border-top: 1px dotted #888;
+}
+
 .entry-content h2 {
     font-size: 40px;
     margin: 0;
+    color: #49403b;
 }
 
 .entry-content h3 {
     font-size: 20px;
     font-style: normal;
     font-weight: 400;
-    margin: 0 0 40px;
+    margin: 0 0 10px;
 }
 
 .entry-table {
     border-collapse: collapse;
     max-width: 100%;
-    margin: 0px 0 25px;
+    margin: 10px 0 10px;
     table-layout: fixed;
     border-spacing: 0 12px;
     border-collapse: separate;
@@ -400,7 +418,7 @@ a {
 }
 
 .entry-table th {
-    text-align: right;
+    text-align: left;
     font-weight: 500;
     padding: 6px 15px 6px 0px;
     border-right: 1px solid black;
