@@ -62,11 +62,11 @@ a {
 
 .search-input {
     flex-grow: 1;
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #888;
     border-radius: 4px;
     font-family: 'Roboto Mono', monospace;
-    font-size: 15px;
+    font-size: 16px;
     font-style: italic;
 }
 
