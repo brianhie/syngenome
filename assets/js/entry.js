@@ -20,8 +20,8 @@ function generatePageGO(go_id, jsonUrl) {
 
                 <table class="entry-table">
                     <tr><th>Number of prompts</th><td>${row.n_prompts}</td></tr>
-                    <tr><th>Number of DNA sequences</th><td>${row.n_seqs_dna}</td></tr>
-                    <tr><th>Number of protein sequences</th><td>${row.n_seqs_prot}</td></tr>
+                    <tr><th>Number of generated DNA sequences</th><td>${row.n_seqs_dna}</td></tr>
+                    <tr><th>Number of generated protein sequences</th><td>${row.n_seqs_prot}</td></tr>
                 </table>
 
                 <form id="downloadForm" class="download-form">
@@ -74,8 +74,8 @@ function generatePageDomain(domain_id, jsonUrl) {
 
                 <table class="entry-table">
                     <tr><th>Number of prompts</th><td>${row.n_prompts}</td></tr>
-                    <tr><th>Number of DNA sequences</th><td>${row.n_seqs_dna}</td></tr>
-                    <tr><th>Number of protein sequences</th><td>${row.n_seqs_prot}</td></tr>
+                    <tr><th>Number of generated DNA sequences</th><td>${row.n_seqs_dna}</td></tr>
+                    <tr><th>Number of generated protein sequences</th><td>${row.n_seqs_prot}</td></tr>
                 </table>
 
                 <form id="downloadForm" class="download-form">
@@ -128,8 +128,8 @@ function generatePageSpecies(species_id, jsonUrl) {
 
                 <table class="entry-table">
                     <tr><th>Number of prompts</th><td>${row.n_prompts}</td></tr>
-                    <tr><th>Number of DNA sequences</th><td>${row.n_seqs_dna}</td></tr>
-                    <tr><th>Number of protein sequences</th><td>${row.n_seqs_prot}</td></tr>
+                    <tr><th>Number of generated DNA sequences</th><td>${row.n_seqs_dna}</td></tr>
+                    <tr><th>Number of generated protein sequences</th><td>${row.n_seqs_prot}</td></tr>
                 </table>
 
                 <form id="downloadForm" class="download-form">
@@ -193,8 +193,8 @@ function generatePageUniProt(uniprot_id, jsonUrl) {
                     <tr><th>Domains</th><td>${domain_content}</td></tr>
                     <tr><th>GO terms</th><td>${go_content}</td></tr>
                     <tr><th>Number of prompts</th><td>${row.n_prompts}</td></tr>
-                    <tr><th>Number of DNA sequences</th><td>${row.n_seqs_dna}</td></tr>
-                    <tr><th>Number of protein sequences</th><td>${row.n_seqs_prot}</td></tr>
+                    <tr><th>Number of generated DNA sequences</th><td>${row.n_seqs_dna}</td></tr>
+                    <tr><th>Number of generated protein sequences</th><td>${row.n_seqs_prot}</td></tr>
                 </table>
 
                 <form id="downloadForm" class="download-form">
