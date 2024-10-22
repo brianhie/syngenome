@@ -1,4 +1,5 @@
 let filteredData = null;
+let searchKey = null;
 let jsonUrl = null;
 
 const tableBody = document.querySelector('#dataTable tbody');
@@ -13,6 +14,7 @@ let currentPage = 1;
 const urlParams = new URLSearchParams(window.location.search);
 let filterKey = null;
 let filterValue = null;
+let filterTerm = null;
 // Iterate through URL parameters and use the first one found.
 for (const [key, value] of urlParams.entries()) {
     filterKey = key;
@@ -58,7 +60,7 @@ const columnOrder = [
     'n_seqs_prot'
 ];
 
-function renderTable(url, filterTerm, noLoading) {
+function renderTable(url, noLoading) {
     if (!noLoading) {
         showLoading();
     }
@@ -69,9 +71,8 @@ function renderTable(url, filterTerm, noLoading) {
         .then(data => {
             filteredData = data
                 .filter(item => {
-                    const key = Object.entries(item)[0][0];
                     if (filterTerm) {
-                        const filterMatch = item[key].toLowerCase().includes(filterTerm);
+                        const filterMatch = item[searchKey].toLowerCase().includes(filterTerm);
                         return filterMatch && isItemAllowableUnderURLParam(item);
                     }
                     return isItemAllowableUnderURLParam(item);
@@ -116,6 +117,9 @@ function renderTable(url, filterTerm, noLoading) {
                             goTermLink.href = `/go.html?id=${encodeURIComponent(value)}`;
                             goTermLink.textContent = capitalize(value);
                             cell.appendChild(goTermLink);
+                            if (!searchKey) {
+                                searchKey = key;
+                            }
                             break;
 
                         case 'go_terms':
@@ -129,6 +133,9 @@ function renderTable(url, filterTerm, noLoading) {
                             domainLink.href = `/domain.html?id=${encodeURIComponent(value)}`;
                             domainLink.textContent = value;
                             cell.appendChild(domainLink);
+                            if (!searchKey) {
+                                searchKey = key;
+                            }
                             break;
 
                         case 'domain_ids':
@@ -142,6 +149,9 @@ function renderTable(url, filterTerm, noLoading) {
                             speciesLink.href = `/species.html?id=${encodeURIComponent(value)}`;
                             speciesLink.textContent = value;
                             cell.appendChild(speciesLink);
+                            if (!searchKey) {
+                                searchKey = key;
+                            }
                             break;
 
                         case 'uniprot_id':
@@ -149,6 +159,9 @@ function renderTable(url, filterTerm, noLoading) {
                             uniprotLink.href = `/uniprot.html?id=${encodeURIComponent(value)}`;
                             uniprotLink.textContent = value;
                             cell.appendChild(uniprotLink);
+                            if (!searchKey) {
+                                searchKey = key;
+                            }
                             break;
 
                         case 'n_prompts':
@@ -184,19 +197,19 @@ function renderTable(url, filterTerm, noLoading) {
 prevButton.addEventListener('click', () => {
     if (currentPage > 1) {
         currentPage--;
-        renderTable(jsonUrl, null, true);
+        renderTable(jsonUrl, true);
     }
 });
 
 nextButton.addEventListener('click', () => {
     if (currentPage < Math.ceil(filteredData.length / itemsPerPage)) {
         currentPage++;
-        renderTable(jsonUrl, null, true);
+        renderTable(jsonUrl, true);
     }
 });
 
 searchInput.addEventListener('input', (e) => {
-    const filterTerm = e.target.value.toLowerCase();
+    filterTerm = e.target.value.toLowerCase();
     currentPage = 1;
-    renderTable(jsonUrl, filterTerm, true);
+    renderTable(jsonUrl, true);
 });
