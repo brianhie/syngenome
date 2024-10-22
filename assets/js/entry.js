@@ -15,7 +15,7 @@ function generatePageGO(go_id, jsonUrl) {
             const row = filteredData[0];
 
             const summaryTable = `
-                <h2>${row.go_term}</h2>
+                <h2>${capitalize(row.go_term)}</h2>
                 <h3>${row.go_id} | ${row.go_type}</h3>
 
                 <table class="entry-table">

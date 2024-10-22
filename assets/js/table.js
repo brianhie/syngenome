@@ -114,7 +114,7 @@ function renderTable(url, filterTerm, noLoading) {
                         case 'go_term':
                             const goTermLink = document.createElement('a');
                             goTermLink.href = `/go.html?id=${encodeURIComponent(value)}`;
-                            goTermLink.textContent = value;
+                            goTermLink.textContent = capitalize(value);
                             cell.appendChild(goTermLink);
                             break;
 
