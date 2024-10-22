@@ -41,6 +41,23 @@ function updatePaginationButtons(filteredData) {
     nextButton.disabled = currentPage === Math.ceil(filteredData.length / itemsPerPage);
 }
 
+const columnOrder = [
+    'go_term',
+    'go_id',
+    'go_type',
+    'domain_id',
+    'domain_name',
+    'uniprot_id',
+    'uniprot_name',
+    'species_id',
+    'domain_ids',
+    'go_terms',
+    'go_ids',
+    'n_prompts',
+    'n_seqs_dna',
+    'n_seqs_prot'
+];
+
 function renderTable(url, filterTerm, noLoading) {
     if (!noLoading) {
         showLoading();
@@ -52,7 +69,7 @@ function renderTable(url, filterTerm, noLoading) {
         .then(data => {
             filteredData = data
                 .filter(item => {
-	            const key = Object.entries(item)[0][0];
+                    const key = Object.entries(item)[0][0];
                     if (filterTerm) {
                         const filterMatch = item[key].toLowerCase().includes(filterTerm);
                         return filterMatch && isItemAllowableUnderURLParam(item);
@@ -67,72 +84,92 @@ function renderTable(url, filterTerm, noLoading) {
 
             tableBody.innerHTML = '';
 
+            if (columnOrder.length === 0 && pageData.length > 0) {
+                columnOrder = Object.keys(pageData[0]);
+            }
+
             pageData.forEach(item => {
                 const row = document.createElement('tr');
-                Object.entries(item).forEach(([key, value], index) => {
+                
+                columnOrder.forEach(key => {
+                    if (!(key in item)) return;
+                    
+                    const value = item[key];
                     const cell = document.createElement('td');
 
-                    if (key === 'go_id') {
-                        const link = document.createElement('a');
-		        link.href = `/go.html?id=${encodeURIComponent(value)}`;
-                        link.textContent = value;
-                        cell.appendChild(link);
+                    switch(key) {
+                        case 'go_id':
+                            const goLink = document.createElement('a');
+                            goLink.href = `/go.html?id=${encodeURIComponent(value)}`;
+                            goLink.textContent = value;
+                            cell.appendChild(goLink);
+                            break;
 
-                    } else if (key === 'go_ids') {
-                        cell.innerHTML = value.map(go_id => {
-                            return `<a href="/go.html?id=${encodeURIComponent(go_id)}">${go_id}</a>`;
-                        }).join(', ');
+                        case 'go_ids':
+                            cell.innerHTML = value.map(go_id => 
+                                `<a href="/go.html?id=${encodeURIComponent(go_id)}">${go_id}</a>`
+                            ).join(', ');
+                            break;
 
-                    } else if (key === 'go_term') {
-                        const link = document.createElement('a');
-		        link.href = `/go.html?id=${encodeURIComponent(value)}`;
-                        link.textContent = value;
-                        cell.appendChild(link);
+                        case 'go_term':
+                            const goTermLink = document.createElement('a');
+                            goTermLink.href = `/go.html?id=${encodeURIComponent(value)}`;
+                            goTermLink.textContent = value;
+                            cell.appendChild(goTermLink);
+                            break;
 
-                    } else if (key === 'go_terms') {
-                        cell.innerHTML = value.map(go_term => {
-                            return `<a href="/go.html?id=${encodeURIComponent(go_term)}">${go_term}</a>`;
-                        }).join(', ');
+                        case 'go_terms':
+                            cell.innerHTML = value.map(go_term => 
+                                `<a href="/go.html?id=${encodeURIComponent(go_term)}">${go_term}</a>`
+                            ).join(', ');
+                            break;
 
-                    } else if (key === 'domain_id') {
-                        const link = document.createElement('a');
-		        link.href = `/domain.html?id=${encodeURIComponent(value)}`;
-                        link.textContent = value;
-                        cell.appendChild(link);
+                        case 'domain_id':
+                            const domainLink = document.createElement('a');
+                            domainLink.href = `/domain.html?id=${encodeURIComponent(value)}`;
+                            domainLink.textContent = value;
+                            cell.appendChild(domainLink);
+                            break;
 
-                    } else if (key === 'domain_ids') {
-                        cell.innerHTML = value.map(domain_id => {
-                            return `<a href="/domain.html?id=${encodeURIComponent(domain_id)}">${domain_id}</a>`;
-                        }).join(', ');
+                        case 'domain_ids':
+                            cell.innerHTML = value.map(domain_id => 
+                                `<a href="/domain.html?id=${encodeURIComponent(domain_id)}">${domain_id}</a>`
+                            ).join(', ');
+                            break;
 
-                    } else if (key === 'species_id') {
-                        const link = document.createElement('a');
-		        link.href = `/species.html?id=${encodeURIComponent(value)}`;
-                        link.textContent = value;
-                        cell.appendChild(link);
+                        case 'species_id':
+                            const speciesLink = document.createElement('a');
+                            speciesLink.href = `/species.html?id=${encodeURIComponent(value)}`;
+                            speciesLink.textContent = value;
+                            cell.appendChild(speciesLink);
+                            break;
 
-                    } else if (key === 'uniprot_id') {
-                        const link = document.createElement('a');
-		        link.href = `/uniprot.html?id=${encodeURIComponent(value)}`;
-                        link.textContent = value;
-                        cell.appendChild(link);
+                        case 'uniprot_id':
+                            const uniprotLink = document.createElement('a');
+                            uniprotLink.href = `/uniprot.html?id=${encodeURIComponent(value)}`;
+                            uniprotLink.textContent = value;
+                            cell.appendChild(uniprotLink);
+                            break;
 
-                    } else if (key === 'n_prompts' ||
-                               key === 'n_seqs_dna' ||
-                               key === 'n_seqs_prot' ||
-                               key === 'go_type' ||
-                               key === 'domain_name' ||
-                               key === 'uniprot_name') {
-                        cell.textContent = value;
+                        case 'n_prompts':
+                        case 'n_seqs_dna':
+                        case 'n_seqs_prot':
+                        case 'go_type':
+                        case 'domain_name':
+                        case 'uniprot_name':
+                            cell.textContent = value;
+                            break;
 
-                    } else {
-                        /* If key is not registered, do not create entry in table. */
+                        default:
+                            // Skip unregistered keys.
+                            return;
                     }
 
                     if (cell.innerHTML) {
                         row.appendChild(cell);
                     }
                 });
+                
                 tableBody.appendChild(row);
             });
             updatePaginationButtons(filteredData);
@@ -141,7 +178,7 @@ function renderTable(url, filterTerm, noLoading) {
             if (!noLoading) {
                 hideLoading();
             }
-        })
+        });
 }
 
 prevButton.addEventListener('click', () => {
