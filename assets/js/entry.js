@@ -164,7 +164,7 @@ function generatePageUniProt(uniprot_id, jsonUrl) {
     showLoading();
     fetchAndParseJSON(jsonUrl)
         .then(data => {
-            const filteredData = data.filter(row => row.uniprot_id === uniprot_id);
+            const filteredData = data.filter(row => row.u === uniprot_id);
 
             if (filteredData.length === 0) {
                 document.getElementById('content').innerHTML = `
@@ -176,25 +176,25 @@ function generatePageUniProt(uniprot_id, jsonUrl) {
 
             const row = filteredData[0];
 
-            const species_content = `<a href="/species.html?id=${row.species_id}">${row.species_id}</a>`;
-            const domain_content = row.domain_ids.map(domain => {
+            const species_content = `<a href="/species.html?id=${row.s}">${row.s}</a>`;
+            const domain_content = row.d.map(domain => {
                 return `<a href="/domain.html?id=${domain}">${domain}</a>`;
             }).join(', ');
-            const go_content = zip(row.go_ids, row.go_terms).map(([go_id, go_term]) => {
+            const go_content = zip(row.g, row.t).map(([go_id, go_term]) => {
                 return `<a href="/go.html?id=${go_id}">${go_term} (${go_id})</a>`;
             }).join(', ');
 
             const summaryTable = `
-                <h2>${row.uniprot_id}</h2>
-                <h3>${row.uniprot_name}</h3>
+                <h2>${row.u}</h2>
+                <h3>${row.n}</h3>
 
                 <table class="entry-table">
                     <tr><th>Species</th><td>${species_content}</td></tr>
                     <tr><th>Domains</th><td>${domain_content}</td></tr>
                     <tr><th>GO terms</th><td>${go_content}</td></tr>
-                    <tr><th>Number of prompts</th><td>${row.n_prompts}</td></tr>
-                    <tr><th>Number of generated DNA sequences</th><td>${row.n_seqs_dna}</td></tr>
-                    <tr><th>Number of generated protein sequences</th><td>${row.n_seqs_prot}</td></tr>
+                    <tr><th>Number of prompts</th><td>${row.p}</td></tr>
+                    <tr><th>Number of generated DNA sequences</th><td>${row.a}</td></tr>
+                    <tr><th>Number of generated protein sequences</th><td>${row.r}</td></tr>
                 </table>
 
                 <form id="downloadForm" class="download-form">

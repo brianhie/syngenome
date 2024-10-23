@@ -1,4 +1,5 @@
 let filteredData = null;
+let totalData = null;
 let searchKey = null;
 let jsonUrl = null;
 
@@ -49,15 +50,15 @@ const columnOrder = [
     'go_type',
     'domain_id',
     'domain_name',
-    'uniprot_id',
-    'uniprot_name',
-    'species_id',
-    'domain_ids',
-    'go_terms',
-    'go_ids',
-    'n_prompts',
-    'n_seqs_dna',
-    'n_seqs_prot'
+    'uniprot_id', 'u',
+    'uniprot_name', 'n',
+    'species_id', 's',
+    'domain_ids', 'd',
+    'go_terms', 't',
+    'go_ids', 'g',
+    'n_prompts', 'p',
+    'n_seqs_dna', 'a',
+    'n_seqs_prot', 'r'
 ];
 
 function renderTable(url, noLoading) {
@@ -67,17 +68,27 @@ function renderTable(url, noLoading) {
 
     jsonUrl = url;
 
-    fetchAndParseJSON(jsonUrl)
+    fetchAndParseJSON(jsonUrl, totalData)
         .then(data => {
             filteredData = data
                 .filter(item => {
                     if (filterTerm) {
-                        const filterMatch = item[searchKey].toLowerCase().includes(filterTerm);
+                        const searchValues = Object.values(item);
+                        const filterMatch = searchValues.some(value => {
+                            const searchArray = Array.isArray(value) ? value : [value];
+                            return searchArray.some(element =>
+                                String(element).toLowerCase().includes(filterTerm)
+                            );
+                        });
                         return filterMatch && isItemAllowableUnderURLParam(item);
                     }
                     return isItemAllowableUnderURLParam(item);
                 })
                 .sort(item => -item.n_prompts);
+
+            if (!totalData) {
+                totalData = filteredData;
+            }
 
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
@@ -99,83 +110,102 @@ function renderTable(url, noLoading) {
                     const cell = document.createElement('td');
 
                     switch(key) {
-                        case 'go_id':
-                            const goLink = document.createElement('a');
-                            goLink.href = `/go.html?id=${encodeURIComponent(value)}`;
-                            goLink.textContent = value;
-                            cell.appendChild(goLink);
-                            break;
 
-                        case 'go_ids':
-                            cell.innerHTML = value.map(go_id => 
-                                `<a href="/go.html?id=${encodeURIComponent(go_id)}">${go_id}</a>`
-                            ).join(', ');
-                            break;
+                    case 'go_id':
+                        const goLink = document.createElement('a');
+                        goLink.href = `/go.html?id=${encodeURIComponent(value)}`;
+                        goLink.textContent = value;
+                        cell.appendChild(goLink);
+                        break;
 
-                        case 'go_term':
-                            const goTermLink = document.createElement('a');
-                            goTermLink.href = `/go.html?id=${encodeURIComponent(value)}`;
-                            goTermLink.textContent = capitalize(value);
-                            cell.appendChild(goTermLink);
-                            if (!searchKey) {
-                                searchKey = key;
-                            }
-                            break;
+                    case 'go_ids':
+                    case 'g':
+                        cell.innerHTML = value.map(go_id => 
+                            `<a href="/go.html?id=${encodeURIComponent(go_id)}">${go_id}</a>`
+                        ).join(', ');
+                        if (value.length === 0) {
+                            cell.innerHTML = '-';
+                        }
+                        break;
 
-                        case 'go_terms':
-                            cell.innerHTML = value.map(go_term => 
-                                `<a href="/go.html?id=${encodeURIComponent(go_term)}">${go_term}</a>`
-                            ).join(', ');
-                            break;
+                    case 'go_term':
+                        const goTermLink = document.createElement('a');
+                        goTermLink.href = `/go.html?id=${encodeURIComponent(value)}`;
+                        goTermLink.textContent = capitalize(value);
+                        cell.appendChild(goTermLink);
+                        if (!searchKey) {
+                            searchKey = key;
+                        }
+                        break;
 
-                        case 'domain_id':
-                            const domainLink = document.createElement('a');
-                            domainLink.href = `/domain.html?id=${encodeURIComponent(value)}`;
-                            domainLink.textContent = value;
-                            cell.appendChild(domainLink);
-                            if (!searchKey) {
-                                searchKey = key;
-                            }
-                            break;
+                    case 'go_terms':
+                    case 't':
+                        cell.innerHTML = value.map(go_term => 
+                            `<a href="/go.html?id=${encodeURIComponent(go_term)}">${go_term}</a>`
+                        ).join(', ');
+                        if (value.length === 0) {
+                            cell.innerHTML = '-';
+                        }
+                        break;
 
-                        case 'domain_ids':
-                            cell.innerHTML = value.map(domain_id => 
-                                `<a href="/domain.html?id=${encodeURIComponent(domain_id)}">${domain_id}</a>`
-                            ).join(', ');
-                            break;
+                    case 'domain_id':
+                        const domainLink = document.createElement('a');
+                        domainLink.href = `/domain.html?id=${encodeURIComponent(value)}`;
+                        domainLink.textContent = value;
+                        cell.appendChild(domainLink);
+                        if (!searchKey) {
+                            searchKey = key;
+                        }
+                        break;
 
-                        case 'species_id':
-                            const speciesLink = document.createElement('a');
-                            speciesLink.href = `/species.html?id=${encodeURIComponent(value)}`;
-                            speciesLink.textContent = value;
-                            cell.appendChild(speciesLink);
-                            if (!searchKey) {
-                                searchKey = key;
-                            }
-                            break;
+                    case 'domain_ids':
+                    case 'd':
+                        cell.innerHTML = value.map(domain_id => 
+                            `<a href="/domain.html?id=${encodeURIComponent(domain_id)}">${domain_id}</a>`
+                        ).join(', ');
+                        if (value.length === 0) {
+                            cell.innerHTML = '-';
+                        }
+                        break;
 
-                        case 'uniprot_id':
-                            const uniprotLink = document.createElement('a');
-                            uniprotLink.href = `/uniprot.html?id=${encodeURIComponent(value)}`;
-                            uniprotLink.textContent = value;
-                            cell.appendChild(uniprotLink);
-                            if (!searchKey) {
-                                searchKey = key;
-                            }
-                            break;
+                    case 'species_id':
+                    case 's':
+                        const speciesLink = document.createElement('a');
+                        speciesLink.href = `/species.html?id=${encodeURIComponent(value)}`;
+                        speciesLink.textContent = value;
+                        cell.appendChild(speciesLink);
+                        if (!searchKey) {
+                            searchKey = key;
+                        }
+                        break;
 
-                        case 'n_prompts':
-                        case 'n_seqs_dna':
-                        case 'n_seqs_prot':
-                        case 'go_type':
-                        case 'domain_name':
-                        case 'uniprot_name':
-                            cell.textContent = value;
-                            break;
+                    case 'uniprot_id':
+                    case 'u':
+                        const uniprotLink = document.createElement('a');
+                        uniprotLink.href = `/uniprot.html?id=${encodeURIComponent(value)}`;
+                        uniprotLink.textContent = value;
+                        cell.appendChild(uniprotLink);
+                        if (!searchKey) {
+                            searchKey = key;
+                        }
+                        break;
 
-                        default:
-                            // Skip unregistered keys.
-                            return;
+                    case 'n_prompts':
+                    case 'p':
+                    case 'n_seqs_dna':
+                    case 'a':
+                    case 'n_seqs_prot':
+                    case 'r':
+                    case 'go_type':
+                    case 'domain_name':
+                    case 'uniprot_name':
+                    case 'n':
+                        cell.textContent = value;
+                        break;
+
+                    default:
+                        // Skip unregistered keys.
+                        return;
                     }
 
                     if (cell.innerHTML) {

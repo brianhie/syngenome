@@ -11,22 +11,6 @@ function hideLoading() {
     document.getElementById('loading').style.display = 'none';
 }
 
-function fetchAndParseJSON(url) {
-    return fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            return data;
-        })
-        .catch(error => {
-            console.error('Error fetching or parsing JSON:', error);
-        });
-}
-
 function downloadFile(url, fileName) {
     // Create a temporary anchor element and programmatically click it.
     const link = document.createElement('a');
@@ -43,4 +27,75 @@ function downloadFile(url, fileName) {
 function capitalize(str) {
     if (typeof str !== 'string' || !str) return str;
     return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function openDB() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open('DataCache', 1);
+        
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => resolve(request.result);
+        
+        request.onupgradeneeded = (event) => {
+            const db = event.target.result;
+            db.createObjectStore('decompressed', { keyPath: 'url' });
+        };
+    });
+}
+
+async function fetchAndParseJSON(url, overrideData) {
+    if (overrideData) {
+        return overrideData;
+    }
+    
+    // Try cache first
+    try {
+        const db = await openDB();
+        const tx = db.transaction('decompressed', 'readonly');
+        const store = tx.objectStore('decompressed');
+        const cached = await new Promise((resolve, reject) => {
+            const request = store.get(url);
+            request.onerror = () => reject(request.error);
+            request.onsuccess = () => resolve(request.result);
+        });
+
+        if (cached) {
+            return cached.data;
+        }
+    } catch (e) {
+        console.warn('Cache read failed:', e);
+    }
+
+    // If not in cache, fetch and cache
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    if (url.toLowerCase().endsWith('.gz')) {
+        const blob = await response.blob();
+        const ds = new DecompressionStream('gzip');
+        const decompressedStream = blob.stream().pipeThrough(ds);
+        const decompressedResponse = new Response(decompressedStream);
+        const text = await decompressedResponse.text();
+        const data = JSON.parse(text);
+
+        // Cache the result
+        try {
+            const db = await openDB();
+            const tx = db.transaction('decompressed', 'readwrite');
+            const store = tx.objectStore('decompressed');
+            await new Promise((resolve, reject) => {
+                const request = store.put({ url, data });
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => resolve();
+            });
+        } catch (e) {
+            console.warn('Cache write failed:', e);
+        }
+
+        return data;
+    }
+
+    return response.json();
 }
