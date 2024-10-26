@@ -84,7 +84,16 @@ function renderTable(url, noLoading) {
                     }
                     return isItemAllowableUnderURLParam(item);
                 })
-                .sort(item => -item.n_prompts);
+                .sort((a, b) => {
+                    const aValue = Number(a.n_prompts !== undefined ? a.n_prompts : a.p) || 0;
+                    const bValue = Number(b.n_prompts !== undefined ? b.n_prompts : b.p) || 0;
+                    if (aValue !== bValue) {
+                        return bValue - aValue;
+                    }
+                    const aU = Number(a.u) || 0;
+                    const bU = Number(b.u) || 0;
+                    return bU - aU;
+                });
 
             if (!totalData) {
                 totalData = filteredData;
