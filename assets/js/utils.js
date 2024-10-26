@@ -43,6 +43,17 @@ function openDB() {
     });
 }
 
+function cleanIdentifier(identifier) {
+    if (identifier == null || identifier === '') {
+        return "none";
+    }
+    let cleaned = String(identifier).toLowerCase();
+    cleaned = cleaned.replace(/[^a-z0-9-]/g, '');
+    cleaned = cleaned.replace(/-+/g, '-');
+    cleaned = cleaned.replace(/^-+|-+$/g, '');
+    return cleaned || "none";
+}
+
 async function fetchAndParseJSON(url, overrideData) {
     if (overrideData) {
         return overrideData;
