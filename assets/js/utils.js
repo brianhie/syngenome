@@ -11,17 +11,22 @@ function hideLoading() {
     document.getElementById('loading').style.display = 'none';
 }
 
-function downloadFile(url, fileName) {
-    // Create a temporary anchor element and programmatically click it.
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = fileName || 'download'; // If fileName is not provided, the original filename will be used.
-    link.target = '_blank'; // Open link in new page.
-    link.rel = 'noopener noreferrer';
+async function downloadFile(url, fileName) {
+    try {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        const downloadUrl = URL.createObjectURL(blob);
 
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = fileName;  // This sets the file name
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(downloadUrl);
+    } catch (error) {
+        console.error('Download failed:', error);
+    }
 }
 
 function capitalize(str) {

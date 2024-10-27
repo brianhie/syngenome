@@ -39,7 +39,7 @@ function generatePageGO(go_id, jsonUrl) {
             downloadButton.addEventListener('click', (e) => {
                 e.preventDefault();
                 showLoading();
-                downloadFile('https://gist.githubusercontent.com/brianhie/64bbb0402ba0e0a86f1cc978b0be9723/raw/ae9510b8026641814ddeff606f3537b33d4e9a7c/syngenome_test_chunk.csv', 'syngenome_download.csv');
+                downloadFile('https://huggingface.co/datasets/brianhie/test-dataset/resolve/main/final_syngenome_prompts_chunk_1_evo_generations_cleaned_uniprot_data_w_names_w_proteins.csv.gz', 'syngenome_download.csv');
                 hideLoading();
             });
         })
@@ -160,6 +160,50 @@ function generatePageSpecies(species_id, jsonUrl) {
         });
 }
 
+async function processAndDownloadUniProtCSV(url, uniprotId) {
+    try {
+        const response = await fetch(url);
+
+        const decompressedStream = response.body
+              .pipeThrough(new DecompressionStream('gzip'))
+              .pipeThrough(new TextDecoderStream());
+
+        let decompressed = '';
+        const reader = decompressedStream.getReader();
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            decompressed += value;
+        }
+
+        const lines = decompressed.split('\n');
+        const header = lines[0];
+
+        // Filter rows where UniProt_CID matches.
+        const matchingRows = lines.slice(1).filter(line => {
+            const columns = line.split(',');
+            const uniprotIndex = 5; // Index of UniProt_CID column.
+            return columns[uniprotIndex] === uniprotId;
+        });
+
+        const csvContent = [header, ...matchingRows].join('\n');
+
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const downloadUrl = URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = 'filtered_syngenome.csv';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(downloadUrl);
+
+    } catch (error) {
+        console.error('Processing failed:', error);
+    }
+}
+
 function generatePageUniProt(uniprot_id, jsonUrl) {
     showLoading();
     fetchAndParseJSON(jsonUrl)
@@ -197,7 +241,7 @@ function generatePageUniProt(uniprot_id, jsonUrl) {
                     <tr><th>Number of generated protein sequences</th><td>${row.r}</td></tr>
                 </table>
 
-                <form id="downloadForm" class="download-form">
+                <form id="downloadForm" class="download-form" style="margin: 0;">
           	  <div class="download-buttons">
           	    <button id="download-button" class="download-button">Download prompts and generations</button>
           	  </div>
@@ -207,10 +251,15 @@ function generatePageUniProt(uniprot_id, jsonUrl) {
             document.getElementById('content').innerHTML = summaryTable;
 
             const downloadButton = document.getElementById('download-button');
-            downloadButton.addEventListener('click', (e) => {
+            const chunk = row.c;
+            const chunkDir = Number(chunk) >= 10000 ? "10000" : "00000";
+            downloadButton.addEventListener('click', async (e) => {
                 e.preventDefault();
                 showLoading();
-                downloadFile('https://gist.githubusercontent.com/brianhie/64bbb0402ba0e0a86f1cc978b0be9723/raw/ae9510b8026641814ddeff606f3537b33d4e9a7c/syngenome_test_chunk.csv', 'syngenome_download.csv');
+                await processAndDownloadUniProtCSV(
+                    `https://huggingface.co/datasets/brianhie/test-dataset/resolve/main/${chunkDir}/final_syngenome_prompts_chunk_${chunk}_evo_generations_cleaned_uniprot_data_w_names_w_proteins.csv.gz`,
+                    row.u
+                );
                 hideLoading();
             });
         })
