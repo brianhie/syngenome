@@ -23,7 +23,7 @@ a {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1150px;
     margin: 7rem auto;
     padding: 40px;
     text-align: left;
@@ -150,7 +150,8 @@ a {
 }
 
 .download-button:hover {
-    text-decoration: underline;
+    /*text-decoration: underline;*/
+    background-color: #c3baad;
 }
 
 .example-queries {
@@ -207,8 +208,8 @@ a {
 }
 
 .browse-button:hover {
-    /*background-color: #357abd;*/
-    text-decoration: underline;
+    background-color: #d5d1cd;
+    /*text-decoration: underline;*/
 }
 
 @media (max-width: 700px) {
@@ -353,7 +354,7 @@ a {
 }
 
 .data-table-container {
-    max-width: 1200px;
+    max-width: 1150px;
     margin: 7rem auto;
     padding: 40px;
     border-radius: 0px;
@@ -397,6 +398,12 @@ a {
     border-top: 1px solid black;
     border-bottom: 1px solid black;
     font-weight: 700;
+}
+
+.data-table-loading {
+    text-align: center;
+    padding: 20px 0 20px;
+    font-size: 20px;
 }
 
 .data-table-pagination {
@@ -548,7 +555,7 @@ a {
 .about-container {
     display: flex;
     justify-content: center;
-    max-width: 1200px;
+    max-width: 1150px;
     margin: 7rem auto;
     padding: 20px;
 }

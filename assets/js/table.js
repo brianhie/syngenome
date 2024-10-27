@@ -111,6 +111,12 @@ function renderTable(url, noLoading) {
 
             pageData.forEach(item => {
                 const row = document.createElement('tr');
+
+                if ((item.species_id && item.species_id.toLowerCase() == "unknown") ||
+                    (item.s && item.s.toLowerCase() == "unknown")) {
+                    // Ignore the "Unknown" species.
+                    return;
+                }
                 
                 columnOrder.forEach(key => {
                     if (!(key in item)) return;
@@ -247,8 +253,15 @@ nextButton.addEventListener('click', () => {
     }
 });
 
+let timeoutId;
 searchInput.addEventListener('input', (e) => {
-    filterTerm = e.target.value.toLowerCase();
-    currentPage = 1;
-    renderTable(jsonUrl, true);
+    // Clear any existing timeout.
+    clearTimeout(timeoutId);
+
+    // Set new timeout for 250 milliseconds.
+    timeoutId = setTimeout(() => {
+        filterTerm = e.target.value.toLowerCase();
+        currentPage = 1;
+        renderTable(jsonUrl, true);
+    }, 250);
 });
