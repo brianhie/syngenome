@@ -201,7 +201,7 @@ a {
     font-style: italic;
     background-color: #fdfcfa; /*#ddd8d1;*/
     color: black;
-    border: 1px solid #aaa;
+    border: 1px solid #ddd;
     box-shadow: 0 0px 3px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
     cursor: pointer;
