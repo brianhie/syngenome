@@ -400,12 +400,6 @@ a {
     font-weight: 700;
 }
 
-.data-table-loading {
-    text-align: center;
-    padding: 20px 0 20px;
-    font-size: 20px;
-}
-
 .data-table-pagination {
     display: flex;
     justify-content: flex-end;
