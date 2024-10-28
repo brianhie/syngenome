@@ -1,5 +1,5 @@
 function generatePageGO(go_id, jsonUrl) {
-    showLoading();
+    //showLoading();
     fetchAndParseJSON(jsonUrl)
         .then(data => {
             const filteredData = data.filter(row => ((row.go_id === go_id) || row.go_term === go_id));
@@ -17,7 +17,7 @@ function generatePageGO(go_id, jsonUrl) {
             const summaryTable = `
                 <h2>${capitalize(row.go_term)}</h2>
                 <h3>${row.go_id} | ${row.go_type}</h3>
-
+                <p class="entry-database-text">View on <a class="entry-database-link" href="https://amigo.geneontology.org/amigo/term/${row.go_id}" target="_blank" rel="noopener noreferrer">AmiGO 2 ↗</a> | View on <a class="entry-database-link" href="https://www.ebi.ac.uk/QuickGO/term/${row.go_id}" target="_blank" rel="noopener noreferrer">QuickGO ↗</a></p>
                 <table class="entry-table">
                     <tr><th>Number of prompts</th><td>${row.n_prompts}</td></tr>
                     <tr><th>Number of generated DNA sequences</th><td>${row.n_seqs_dna}</td></tr>
@@ -48,12 +48,12 @@ function generatePageGO(go_id, jsonUrl) {
             document.getElementById('content').innerHTML = '<p>Error loading data. Please refresh and try again.</p>';
         })
         .finally(() => {
-            hideLoading();
+            //hideLoading();
         });
 }
 
 function generatePageDomain(domain_id, jsonUrl) {
-    showLoading();
+    //showLoading();
     fetchAndParseJSON(jsonUrl)
         .then(data => {
             const filteredData = data.filter(row => (row.domain_id === domain_id));
@@ -71,6 +71,7 @@ function generatePageDomain(domain_id, jsonUrl) {
             const summaryTable = `
                 <h2>${row.domain_id}</h2>
                 <h3>${row.domain_name}</h3>
+                <p class="entry-database-text">View on <a class="entry-database-link" href="https://www.ebi.ac.uk/interpro/entry/InterPro/${row.domain_id}/" target="_blank" rel="noopener noreferrer">InterPro ↗</a></p>
 
                 <table class="entry-table">
                     <tr><th>Number of prompts</th><td>${row.n_prompts}</td></tr>
@@ -102,12 +103,12 @@ function generatePageDomain(domain_id, jsonUrl) {
             document.getElementById('content').innerHTML = '<p>Error loading data. Please refresh and try again.</p>';
         })
         .finally(() => {
-            hideLoading();
+            //hideLoading();
         });
 }
 
 function generatePageSpecies(species_id, jsonUrl) {
-    showLoading();
+    //showLoading();
     fetchAndParseJSON(jsonUrl)
         .then(data => {
             const filteredData = data.filter(row => (row.species_id === species_id));
@@ -156,7 +157,7 @@ function generatePageSpecies(species_id, jsonUrl) {
             document.getElementById('content').innerHTML = '<p>Error loading data. Please refresh and try again.</p>';
         })
         .finally(() => {
-            hideLoading();
+            //hideLoading();
         });
 }
 
@@ -231,7 +232,7 @@ function generatePageUniProt(uniprot_id, jsonUrl) {
             const summaryTable = `
                 <h2>${row.u}</h2>
                 <h3>${row.n}</h3>
-
+                <p class="entry-database-text">View on <a class="entry-database-link" href="https://www.uniprot.org/uniprotkb/${row.u}/entry" target="_blank" rel="noopener noreferrer">UniProtKB ↗</a></p>
                 <table class="entry-table">
                     <tr><th>Species</th><td>${species_content}</td></tr>
                     <tr><th>Domains</th><td>${domain_content}</td></tr>
@@ -273,6 +274,7 @@ function generatePageUniProt(uniprot_id, jsonUrl) {
 }
 
 function generatePage(entryType, jsonUrl) {
+    showLoading();
     let generatePageFunc = null;
     if (entryType === 'go') {
         generatePageFunc = generatePageGO;
@@ -296,4 +298,5 @@ function generatePage(entryType, jsonUrl) {
             document.getElementById('content').innerHTML = '<p>No entry found! Please check the URL.</p>';
         }
     });
+    hideLoading();
 }

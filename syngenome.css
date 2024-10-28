@@ -437,7 +437,7 @@ a {
     font-size: 20px;
     font-style: normal;
     font-weight: 400;
-    margin: 0 0 10px;
+    margin: 0 0 8px;
 }
 
 .entry-table {
@@ -465,6 +465,20 @@ a {
 
 .entry-table td {
     padding: 6px 0px 6px 13px;
+}
+
+.entry-database-text {
+    font-size: 18px;
+    margin: 0;
+}
+
+.entry-database-link {
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.entry-database-link:hover {
+    text-decoration: underline;
 }
 
 .prompt-section {
