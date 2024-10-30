@@ -20,6 +20,7 @@ async function downloadFile(url, fileName) {
         const link = document.createElement('a');
         link.href = downloadUrl;
         link.download = fileName;  // This sets the file name
+        link.rel = 'noopener noreferrer';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

@@ -39,8 +39,11 @@ function generatePageGO(go_id, jsonUrl) {
             downloadButton.addEventListener('click', (e) => {
                 e.preventDefault();
                 showLoading();
-                downloadFile('https://huggingface.co/datasets/brianhie/test-dataset/resolve/main/final_syngenome_prompts_chunk_1_evo_generations_cleaned_uniprot_data_w_names_w_proteins.csv.gz', 'syngenome_download.csv');
-                hideLoading();
+                const goIDURL = cleanIdentifier(row.go_id);
+                downloadFile(`https://huggingface.co/datasets/brianhie/sg-go/resolve/main/split_${goIDURL}.csv.gz`, 'syngenome_download.csv.gz')
+                    .then(() => {
+                        hideLoading();
+                    });
             });
         })
         .catch(error => {
@@ -107,15 +110,15 @@ function generatePageDomain(domain_id, jsonUrl) {
         });
 }
 
-function generatePageSpecies(species_id, jsonUrl) {
+function generatePageSpecies(speciesID, jsonUrl) {
     //showLoading();
     fetchAndParseJSON(jsonUrl)
         .then(data => {
-            const filteredData = data.filter(row => (row.species_id === species_id));
+            const filteredData = data.filter(row => (row.species_id === speciesID));
 
             if (filteredData.length === 0) {
                 document.getElementById('content').innerHTML = `
-                    <p class="entry-not-found">Could not find ${species_id}</p>
+                    <p class="entry-not-found">Could not find ${speciesID}</p>
                     <p class="entry-not-found"><a href="/">Return to search.</a></p>
                 `;
                 return;
@@ -148,8 +151,16 @@ function generatePageSpecies(species_id, jsonUrl) {
             downloadButton.addEventListener('click', (e) => {
                 e.preventDefault();
                 showLoading();
-                downloadFile('https://gist.githubusercontent.com/brianhie/64bbb0402ba0e0a86f1cc978b0be9723/raw/ae9510b8026641814ddeff606f3537b33d4e9a7c/syngenome_test_chunk.csv', 'syngenome_download.csv');
-                hideLoading();
+                // Download mapping from file name to chunk.
+                fetchAndParseJSON('https://huggingface.co/datasets/brianhie/sg-organism/resolve/main/file_mapping.json')
+                    .then(data => {
+                        const speciesIDURL = cleanIdentifier(row.species_id);
+                        const chunk = data[`split_${speciesIDURL}.csv`];
+                        downloadFile(`https://huggingface.co/datasets/brianhie/sg-organism/resolve/main/${chunk}/split_${speciesIDURL}.csv.gz`, 'syngenome_download.csv.gz')
+                            .then(() => {
+                                hideLoading();
+                            });
+                    });
             });
         })
         .catch(error => {
@@ -194,7 +205,7 @@ async function processAndDownloadUniProtCSV(url, uniprotId) {
 
         const link = document.createElement('a');
         link.href = downloadUrl;
-        link.download = 'filtered_syngenome.csv';
+        link.download = 'syngenome_download.csv';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -258,7 +269,7 @@ function generatePageUniProt(uniprot_id, jsonUrl) {
                 e.preventDefault();
                 showLoading();
                 await processAndDownloadUniProtCSV(
-                    `https://huggingface.co/datasets/brianhie/test-dataset/resolve/main/${chunkDir}/final_syngenome_prompts_chunk_${chunk}_evo_generations_cleaned_uniprot_data_w_names_w_proteins.csv.gz`,
+                    `https://huggingface.co/datasets/brianhie/sg-uniprot/resolve/main/${chunkDir}/final_syngenome_prompts_chunk_${chunk}_evo_generations_cleaned_uniprot_data_w_names_w_proteins.csv.gz`,
                     row.u
                 );
                 hideLoading();
