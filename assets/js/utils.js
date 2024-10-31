@@ -60,92 +60,42 @@ function cleanIdentifier(identifier) {
     return cleaned || "none";
 }
 
-// Constants for chunk sizing and memory management
-const CHUNK_SIZE = 256 * 1024; // 256KB chunks - smaller chunks for mobile
-const MAX_BUFFER_SIZE = 512 * 1024; // 512KB max buffer size
-const MAX_CACHE_CHUNK_SIZE = 1024 * 1024; // 1MB max cache chunk size
-
-// Helper to check if running on mobile
-function isMobile() {
-    return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-}
-
-// Helper to check available memory (where supported)
-async function checkMemoryPressure() {
-    if ('performance' in window && 'memory' in performance) {
-        const memory = performance.memory;
-        return {
-            hasWarning: memory.usedJSHeapSize > memory.jsHeapSizeLimit * 0.7,
-            usedPercent: (memory.usedJSHeapSize / memory.jsHeapSizeLimit) * 100
-        };
+// Helper function to chunk string data
+function* chunkString(str, size) {
+    for (let i = 0; i < str.length; i += size) {
+        yield str.slice(i, i + size);
     }
-    return { hasWarning: false, usedPercent: 0 };
 }
 
-// Stream reader that respects memory constraints
-async function safeStreamReader(readableStream, onChunk) {
-    const reader = readableStream.getReader();
+// Helper function to stream JSON parsing
+async function streamParseJSON(readableStream) {
     const decoder = new TextDecoder();
+    const reader = readableStream.getReader();
     let buffer = '';
     
     try {
         while (true) {
-            // Check memory pressure periodically
-            const memCheck = await checkMemoryPressure();
-            if (memCheck.hasWarning) {
-                // If memory pressure is high, pause briefly to allow GC
-                await new Promise(resolve => setTimeout(resolve, 100));
-            }
-
             const { done, value } = await reader.read();
             if (done) break;
             
-            // Process in smaller chunks on mobile
-            const chunkSize = isMobile() ? CHUNK_SIZE : CHUNK_SIZE * 4;
             buffer += decoder.decode(value, { stream: true });
             
-            while (buffer.length > chunkSize) {
-                const chunk = buffer.slice(0, chunkSize);
-                buffer = buffer.slice(chunkSize);
-                await onChunk(chunk);
+            // Process buffer in chunks to avoid memory issues
+            if (buffer.length > 1024 * 1024) { // 1MB chunks
+                const lastNewline = buffer.lastIndexOf('\n');
+                if (lastNewline > 0) {
+                    const processable = buffer.slice(0, lastNewline);
+                    buffer = buffer.slice(lastNewline + 1);
+                    // Process the chunk here if needed
+                }
             }
         }
         
-        if (buffer.length > 0) {
-            await onChunk(buffer + decoder.decode());
-        }
+        // Process any remaining buffer content
+        buffer += decoder.decode(); // flush the decoder
+        return JSON.parse(buffer);
     } finally {
         reader.releaseLock();
-    }
-}
-
-// Memory-aware JSON parser
-async function streamParseJSON(readableStream, progressCallback) {
-    let jsonString = '';
-    let totalProcessed = 0;
-
-    await safeStreamReader(readableStream, async (chunk) => {
-        totalProcessed += chunk.length;
-        jsonString += chunk;
-        
-        if (progressCallback) {
-            progressCallback(totalProcessed);
-        }
-        
-        // If on mobile, periodically clear variables that aren't needed
-        if (isMobile() && jsonString.length > MAX_BUFFER_SIZE) {
-            jsonString = jsonString.slice(-MAX_BUFFER_SIZE);
-            // Force garbage collection if available
-            if (window.gc) {
-                window.gc();
-            }
-        }
-    });
-
-    try {
-        return JSON.parse(jsonString);
-    } catch (e) {
-        throw new Error(`JSON parsing failed: ${e.message}. This might be due to memory constraints or incomplete data.`);
     }
 }
 
@@ -154,77 +104,86 @@ async function fetchAndParseJSON(url, overrideData, progressCallback) {
         return overrideData;
     }
 
-    // Split large requests into ranges on mobile
-    const isMobileDevice = isMobile();
-    let response;
-    
+    // Try cache first
     try {
-        // First, try to get the file size
-        const headResponse = await fetch(url, { method: 'HEAD' });
-        const fileSize = parseInt(headResponse.headers.get('Content-Length') || '0');
-
-        if (isMobileDevice && fileSize > MAX_CACHE_CHUNK_SIZE) {
-            // For large files on mobile, we'll use range requests
-            const chunks = [];
-            let startByte = 0;
-            
-            while (startByte < fileSize) {
-                const endByte = Math.min(startByte + MAX_CACHE_CHUNK_SIZE, fileSize);
-                const rangeResponse = await fetch(url, {
-                    headers: {
-                        'Range': `bytes=${startByte}-${endByte - 1}`
-                    }
-                });
-
-                if (!rangeResponse.ok && !rangeResponse.status === 206) {
-                    throw new Error('Range request failed');
-                }
-
-                const chunk = await rangeResponse.arrayBuffer();
-                chunks.push(new Uint8Array(chunk));
-
-                if (progressCallback) {
-                    progressCallback(startByte / fileSize);
-                }
-
-                startByte = endByte;
-                
-                // Add a small delay between chunks on mobile to prevent memory pressure
-                await new Promise(resolve => setTimeout(resolve, 50));
-            }
-
-            // Combine chunks
-            const combinedArray = new Uint8Array(fileSize);
-            let offset = 0;
-            for (const chunk of chunks) {
-                combinedArray.set(chunk, offset);
-                offset += chunk.length;
-            }
-
-            response = new Response(combinedArray);
-        } else {
-            // For smaller files or desktop, proceed normally
-            response = await fetch(url);
+        const db = await openDB();
+        const tx = db.transaction('decompressed', 'readonly');
+        const store = tx.objectStore('decompressed');
+        const cached = await new Promise((resolve, reject) => {
+            const request = store.get(url);
+            request.onerror = () => reject(request.error);
+            request.onsuccess = () => resolve(request.result);
+        });
+        if (cached) {
+            return cached.data;
         }
     } catch (e) {
-        console.error('Fetch failed:', e);
-        throw e;
+        console.warn('Cache read failed:', e);
     }
 
-    if (!response.ok && response.status !== 206) {
+    // If not in cache, fetch with progress tracking
+    const response = await fetch(url);
+    if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    if (url.toLowerCase().endsWith('.gz')) {
-        try {
-            const ds = new DecompressionStream('gzip');
-            const decompressedStream = response.body.pipeThrough(ds);
-            return await streamParseJSON(decompressedStream, progressCallback);
-        } catch (e) {
-            console.error('Decompression or parsing failed:', e);
-            throw e;
+    const contentLength = response.headers.get('Content-Length');
+    let loaded = 0;
+
+    // Create a transform stream to track progress
+    const progressStream = new TransformStream({
+        transform(chunk, controller) {
+            loaded += chunk.length;
+            if (progressCallback && contentLength) {
+                progressCallback(loaded / parseInt(contentLength));
+            }
+            controller.enqueue(chunk);
         }
+    });
+
+    if (url.toLowerCase().endsWith('.gz')) {
+        // Handle gzipped content
+        const ds = new DecompressionStream('gzip');
+        const decompressedStream = response.body
+            .pipeThrough(progressStream)
+            .pipeThrough(ds);
+
+        const data = await streamParseJSON(decompressedStream);
+
+        // Cache the result in chunks
+        try {
+            const db = await openDB();
+            const tx = db.transaction('decompressed', 'readwrite');
+            const store = tx.objectStore('decompressed');
+            
+            // Convert data to string and store in chunks if it's very large
+            const dataString = JSON.stringify(data);
+            if (dataString.length > 5 * 1024 * 1024) { // 5MB threshold
+                const chunks = Array.from(chunkString(dataString, 1024 * 1024)); // 1MB chunks
+                await new Promise((resolve, reject) => {
+                    const request = store.put({ 
+                        url, 
+                        data,
+                        chunks: true,
+                        chunkCount: chunks.length
+                    });
+                    request.onerror = () => reject(request.error);
+                    request.onsuccess = () => resolve();
+                });
+            } else {
+                await new Promise((resolve, reject) => {
+                    const request = store.put({ url, data });
+                    request.onerror = () => reject(request.error);
+                    request.onsuccess = () => resolve();
+                });
+            }
+        } catch (e) {
+            console.warn('Cache write failed:', e);
+        }
+
+        return data;
     }
 
-    return streamParseJSON(response.body, progressCallback);
+    // For non-gzipped content, use streaming JSON parser
+    return streamParseJSON(response.body.pipeThrough(progressStream));
 }
