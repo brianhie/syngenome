@@ -97,8 +97,16 @@ function generatePageDomain(domain_id, jsonUrl) {
             downloadButton.addEventListener('click', (e) => {
                 e.preventDefault();
                 showLoading();
-                downloadFile('https://gist.githubusercontent.com/brianhie/64bbb0402ba0e0a86f1cc978b0be9723/raw/ae9510b8026641814ddeff606f3537b33d4e9a7c/syngenome_test_chunk.csv', 'syngenome_download.csv');
-                hideLoading();
+                // Download mapping from file name to chunk.
+                fetchAndParseJSON('https://huggingface.co/datasets/brianhie/sg-domain/resolve/main/file_mapping.json')
+                    .then(data => {
+                        const interproIDURL = cleanIdentifier(row.interpro_id);
+                        const chunk = data[`split_${interproIDURL}.csv`];
+                        downloadFile(`https://huggingface.co/datasets/brianhie/sg-domain/resolve/main/${chunk}/split_${interproIDURL}.csv.gz`, 'syngenome_download.csv.gz')
+                            .then(() => {
+                                hideLoading();
+                            });
+                    });
             });
         })
         .catch(error => {
