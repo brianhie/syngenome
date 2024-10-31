@@ -171,6 +171,7 @@ a {
     font-family: "Roboto Mono", monospace;
     font-size: 12px;
     font-style: italic;
+    color: black;
 }
 
 .example-query:hover {
