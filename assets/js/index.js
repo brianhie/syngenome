@@ -28,7 +28,7 @@ searchForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const searchQuery = searchInput.value.trim();
     if (searchQuery) {
-	window.location.href = `/search.html?text=${encodeURIComponent(searchQuery)}`;
+	window.location.href = `/syngenome/search.html?text=${encodeURIComponent(searchQuery)}`;
     }
 });
 
@@ -40,15 +40,15 @@ const speciesButton = document.getElementById('species-button');
 // Add click event listeners to each button
 goTermButton.addEventListener('click', (e) => {
     e.preventDefault();
-    window.location.href = '/browse/go.html';
+    window.location.href = '/syngenome/browse/go.html';
 });
 
 domainButton.addEventListener('click', (e) => {
     e.preventDefault();
-    window.location.href = '/browse/domain.html';
+    window.location.href = '/syngenome/browse/domain.html';
 });
 
 speciesButton.addEventListener('click', (e) => {
     e.preventDefault();
-    window.location.href = '/browse/species.html';
+    window.location.href = '/syngenome/browse/species.html';
 });

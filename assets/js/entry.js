@@ -7,7 +7,7 @@ function generatePageGO(go_id, jsonUrl) {
             if (filteredData.length === 0) {
                 document.getElementById('content').innerHTML = `
                     <p class="entry-not-found">Could not find ${go_id}</p>
-                    <p class="entry-not-found"><a href="/">Return to search.</a></p>
+                    <p class="entry-not-found"><a href="/syngenome">Return to search.</a></p>
                 `;
                 return;
             }
@@ -64,7 +64,7 @@ function generatePageDomain(domain_id, jsonUrl) {
             if (filteredData.length === 0) {
                 document.getElementById('content').innerHTML = `
                     <p class="entry-not-found">Could not find ${domain_id}</p>
-                    <p class="entry-not-found"><a href="/">Return to search.</a></p>
+                    <p class="entry-not-found"><a href="/syngenome">Return to search.</a></p>
                 `;
                 return;
             }
@@ -127,7 +127,7 @@ function generatePageSpecies(speciesID, jsonUrl) {
             if (filteredData.length === 0) {
                 document.getElementById('content').innerHTML = `
                     <p class="entry-not-found">Could not find ${speciesID}</p>
-                    <p class="entry-not-found"><a href="/">Return to search.</a></p>
+                    <p class="entry-not-found"><a href="/syngenome">Return to search.</a></p>
                 `;
                 return;
             }
@@ -233,7 +233,7 @@ function generatePageUniProt(uniprot_id, jsonUrl) {
             if (filteredData.length === 0) {
                 document.getElementById('content').innerHTML = `
                     <p class="entry-not-found">Could not find ${uniprot_id}</p>
-                    <p class="entry-not-found"><a href="/">Return to search.</a></p>
+                    <p class="entry-not-found"><a href="/syngenome">Return to search.</a></p>
                 `;
                 return;
             }

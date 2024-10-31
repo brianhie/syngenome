@@ -7,8 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="syngenome.css">
-    <link rel="icon" href="/images/logo_dna_green.svg" type="image/x-icon">
+    <link rel="stylesheet" href="/syngenome/syngenome.css">
+    <link rel="icon" href="/syngenome/images/logo_dna_green.svg" type="image/x-icon">
   </head>
 
   <body>
@@ -17,7 +17,7 @@
     <div class="index-container" style="text-align: center;">
 
       <div class="title">
-        <img src="/images/logo_dna_green.svg">
+        <img src="/syngenome/images/logo_dna_green.svg">
         <h1>SynGenome</h1>
       </div>
 
@@ -45,11 +45,11 @@
       
       <footer id="footer"></footer>
 
-      <script src="/assets/js/syngenome.js"></script>
-      <script src="/assets/js/index.js"></script>
+      <script src="/syngenome/assets/js/syngenome.js"></script>
+      <script src="/syngenome/assets/js/index.js"></script>
       <script>
-        renderNav('/navbar.html');
-        fetch('/footer.html')
+        renderNav('/syngenome/navbar.html');
+        fetch('/syngenome/footer.html')
             .then(response => response.text())
             .then(data => document.getElementById('footer').innerHTML = data);
       </script>
