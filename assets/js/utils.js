@@ -60,50 +60,11 @@ function cleanIdentifier(identifier) {
     return cleaned || "none";
 }
 
-// Helper function to chunk string data
-function* chunkString(str, size) {
-    for (let i = 0; i < str.length; i += size) {
-        yield str.slice(i, i + size);
-    }
-}
-
-// Helper function to stream JSON parsing
-async function streamParseJSON(readableStream) {
-    const decoder = new TextDecoder();
-    const reader = readableStream.getReader();
-    let buffer = '';
-    
-    try {
-        while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-            
-            buffer += decoder.decode(value, { stream: true });
-            
-            // Process buffer in chunks to avoid memory issues
-            if (buffer.length > 1024 * 1024) { // 1MB chunks
-                const lastNewline = buffer.lastIndexOf('\n');
-                if (lastNewline > 0) {
-                    const processable = buffer.slice(0, lastNewline);
-                    buffer = buffer.slice(lastNewline + 1);
-                    // Process the chunk here if needed
-                }
-            }
-        }
-        
-        // Process any remaining buffer content
-        buffer += decoder.decode(); // flush the decoder
-        return JSON.parse(buffer);
-    } finally {
-        reader.releaseLock();
-    }
-}
-
-async function fetchAndParseJSON(url, overrideData, progressCallback) {
+async function fetchAndParseJSON(url, overrideData) {
     if (overrideData) {
         return overrideData;
     }
-
+    
     // Try cache first
     try {
         const db = await openDB();
@@ -114,6 +75,7 @@ async function fetchAndParseJSON(url, overrideData, progressCallback) {
             request.onerror = () => reject(request.error);
             request.onsuccess = () => resolve(request.result);
         });
+
         if (cached) {
             return cached.data;
         }
@@ -121,62 +83,30 @@ async function fetchAndParseJSON(url, overrideData, progressCallback) {
         console.warn('Cache read failed:', e);
     }
 
-    // If not in cache, fetch with progress tracking
+    // If not in cache, fetch and cache
     const response = await fetch(url);
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const contentLength = response.headers.get('Content-Length');
-    let loaded = 0;
-
-    // Create a transform stream to track progress
-    const progressStream = new TransformStream({
-        transform(chunk, controller) {
-            loaded += chunk.length;
-            if (progressCallback && contentLength) {
-                progressCallback(loaded / parseInt(contentLength));
-            }
-            controller.enqueue(chunk);
-        }
-    });
-
     if (url.toLowerCase().endsWith('.gz')) {
-        // Handle gzipped content
+        const blob = await response.blob();
         const ds = new DecompressionStream('gzip');
-        const decompressedStream = response.body
-            .pipeThrough(progressStream)
-            .pipeThrough(ds);
+        const decompressedStream = blob.stream().pipeThrough(ds);
+        const decompressedResponse = new Response(decompressedStream);
+        const text = await decompressedResponse.text();
+        const data = JSON.parse(text);
 
-        const data = await streamParseJSON(decompressedStream);
-
-        // Cache the result in chunks
+        // Cache the result
         try {
             const db = await openDB();
             const tx = db.transaction('decompressed', 'readwrite');
             const store = tx.objectStore('decompressed');
-            
-            // Convert data to string and store in chunks if it's very large
-            const dataString = JSON.stringify(data);
-            if (dataString.length > 5 * 1024 * 1024) { // 5MB threshold
-                const chunks = Array.from(chunkString(dataString, 1024 * 1024)); // 1MB chunks
-                await new Promise((resolve, reject) => {
-                    const request = store.put({ 
-                        url, 
-                        data,
-                        chunks: true,
-                        chunkCount: chunks.length
-                    });
-                    request.onerror = () => reject(request.error);
-                    request.onsuccess = () => resolve();
-                });
-            } else {
-                await new Promise((resolve, reject) => {
-                    const request = store.put({ url, data });
-                    request.onerror = () => reject(request.error);
-                    request.onsuccess = () => resolve();
-                });
-            }
+            await new Promise((resolve, reject) => {
+                const request = store.put({ url, data });
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => resolve();
+            });
         } catch (e) {
             console.warn('Cache write failed:', e);
         }
@@ -184,6 +114,5 @@ async function fetchAndParseJSON(url, overrideData, progressCallback) {
         return data;
     }
 
-    // For non-gzipped content, use streaming JSON parser
-    return streamParseJSON(response.body.pipeThrough(progressStream));
+    return response.json();
 }
