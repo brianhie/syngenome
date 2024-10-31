@@ -60,6 +60,13 @@ function cleanIdentifier(identifier) {
     return cleaned || "none";
 }
 
+function checkIfMobile() {
+  return (
+      window.matchMedia('(max-width: 768px)').matches ||
+      /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+  );
+}
+
 async function fetchAndParseJSON(url, overrideData) {
     if (overrideData) {
         return overrideData;
