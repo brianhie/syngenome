@@ -100,7 +100,7 @@ function generatePageDomain(domain_id, jsonUrl) {
                 // Download mapping from file name to chunk.
                 fetchAndParseJSON('https://huggingface.co/datasets/brianhie/sg-domain/resolve/main/file_mapping.json')
                     .then(data => {
-                        const interproIDURL = cleanIdentifier(row.interpro_id);
+                        const interproIDURL = cleanIdentifier(row.domain_id);
                         const chunk = data[`split_${interproIDURL}.csv`];
                         downloadFile(`https://huggingface.co/datasets/brianhie/sg-domain/resolve/main/${chunk}/split_${interproIDURL}.csv.gz`, 'syngenome_download.csv.gz')
                             .then(() => {
