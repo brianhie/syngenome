@@ -40,7 +40,7 @@ function generatePageGO(go_id, jsonUrl) {
                 e.preventDefault();
                 showLoading();
                 const goIDURL = cleanIdentifier(row.go_id);
-                downloadFile(`https://huggingface.co/datasets/brianhie/sg-go/resolve/main/split_${goIDURL}.csv.gz`, 'syngenome_download.csv.gz')
+                downloadFile(`https://huggingface.co/datasets/evo-design/syngenome-go/resolve/main/split_${goIDURL}.csv.gz`, 'syngenome_download.csv.gz')
                     .then(() => {
                         hideLoading();
                     });
@@ -98,11 +98,11 @@ function generatePageDomain(domain_id, jsonUrl) {
                 e.preventDefault();
                 showLoading();
                 // Download mapping from file name to chunk.
-                fetchAndParseJSON('https://huggingface.co/datasets/brianhie/sg-domain/resolve/main/file_mapping.json')
+                fetchAndParseJSON('https://huggingface.co/datasets/evo-design/syngenome-domain/resolve/main/file_mapping.json')
                     .then(data => {
                         const interproIDURL = cleanIdentifier(row.domain_id);
                         const chunk = data[`split_${interproIDURL}.csv`];
-                        downloadFile(`https://huggingface.co/datasets/brianhie/sg-domain/resolve/main/${chunk}/split_${interproIDURL}.csv.gz`, 'syngenome_download.csv.gz')
+                        downloadFile(`https://huggingface.co/datasets/evo-design/syngenome-domain/resolve/main/${chunk}/split_${interproIDURL}.csv.gz`, 'syngenome_download.csv.gz')
                             .then(() => {
                                 hideLoading();
                             });
@@ -160,11 +160,11 @@ function generatePageSpecies(speciesID, jsonUrl) {
                 e.preventDefault();
                 showLoading();
                 // Download mapping from file name to chunk.
-                fetchAndParseJSON('https://huggingface.co/datasets/brianhie/sg-organism/resolve/main/file_mapping.json')
+                fetchAndParseJSON('https://huggingface.co/datasets/evo-design/syngenome-organism/resolve/main/file_mapping.json')
                     .then(data => {
                         const speciesIDURL = cleanIdentifier(row.species_id);
                         const chunk = data[`split_${speciesIDURL}.csv`];
-                        downloadFile(`https://huggingface.co/datasets/brianhie/sg-organism/resolve/main/${chunk}/split_${speciesIDURL}.csv.gz`, 'syngenome_download.csv.gz')
+                        downloadFile(`https://huggingface.co/datasets/evo-design/syngenome-organism/resolve/main/${chunk}/split_${speciesIDURL}.csv.gz`, 'syngenome_download.csv.gz')
                             .then(() => {
                                 hideLoading();
                             });
@@ -182,6 +182,7 @@ function generatePageSpecies(speciesID, jsonUrl) {
 
 async function processAndDownloadUniProtCSV(url, uniprotId) {
     try {
+        console.log(url);
         const response = await fetch(url);
 
         const decompressedStream = response.body
@@ -277,7 +278,7 @@ function generatePageUniProt(uniprot_id, jsonUrl) {
                 e.preventDefault();
                 showLoading();
                 await processAndDownloadUniProtCSV(
-                    `https://huggingface.co/datasets/brianhie/sg-uniprot/resolve/main/${chunkDir}/final_syngenome_prompts_chunk_${chunk}_evo_generations_cleaned_uniprot_data_w_names_w_proteins.csv.gz`,
+                    `https://huggingface.co/datasets/evo-design/syngenome-uniprot/resolve/main/${chunkDir}/final_syngenome_prompts_chunk_${chunk}_evo_generations_cleaned_uniprot_data_w_names_w_proteins.csv.gz`,
                     row.u
                 );
                 hideLoading();
