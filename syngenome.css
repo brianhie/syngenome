@@ -564,6 +564,20 @@ a {
     margin: 0;
 }
 
+.footer-links {
+    margin-top: 250px;
+}
+
+.footer-links-content {
+    font-size: 12px;
+    margin-top: 20px;
+}
+
+.footer-links-content a {
+    font-weight: 500;
+    text-underline-offset: 2px;
+}
+
 .about-container {
     display: flex;
     justify-content: center;

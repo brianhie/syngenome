@@ -24,7 +24,7 @@
       <p>If you are interested in conducting a semantic mining project beyond the scale of SynGenome, please reach out as we are eager to collaborate. A design project could be a good contender for semantic mining if:</p>
 
       <ol>
-        <li><strong>Your desired function is encoded by prokaryotic genomes.</strong> These could include systems like nucleases, protein-based antimicrobials, transposons, polymerases, or metabolic enzymes. We are also interested in further exploring anti-CRISPR systems, a task for which we already have experimental validation.</li>
+        <li><strong>Your desired function is encoded by prokaryotic and phage genomes.</strong> These could include systems like nucleases, protein-based antimicrobials, transposons, polymerases, DNA/RNA binding proteins, or metabolic enzymes.</li>
         <br />
         <li><strong>You have a low- to medium-throughput experimental pipeline for testing your desired function.</strong> While higher throughput is usually better, we have had experimental success rates of 14-50% screening 10-84 designs. Evo designs entire protein sequences from scratch, which can then be synthesized as gene fragments.</li>
       </ol>
@@ -34,16 +34,17 @@
       <h2>Discussions</h2>
 
       <p>The SynGenome website is open source and available at <a href="https://github.com/brianhie/syngenome">https://github.com/brianhie/syngenome</a>. If you have feature requests, bug reports, or any other questions/comments, please use our <a href="https://github.com/brianhie/syngenome/discussions">GitHub Discussions</a> page.</p>
-    </div></div>
 
-    <footer id="footer"></footer>
+      <footer id="footer-links"></footer>
+      
+    </div></div>
 
     <script src="/syngenome/assets/js/syngenome.js"></script>
     <script>
       renderNav('/syngenome/navbar.html');
-      fetch('/syngenome/footer.html')
-           .then(response => response.text())
-           .then(data => document.getElementById('footer').innerHTML = data);
+      fetch('/syngenome/footer_links.html')
+          .then(response => response.text())
+          .then(data => document.getElementById('footer-links').innerHTML = data);
     </script>
   </body>
 </html>
