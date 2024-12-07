@@ -128,7 +128,7 @@ function renderTable(url, noLoading) {
 
                     case 'go_id':
                         const goLink = document.createElement('a');
-                        goLink.href = `/syngenome/go.html?id=${encodeURIComponent(value)}`;
+                        goLink.href = `/syngenome/go?id=${encodeURIComponent(value)}`;
                         goLink.textContent = value;
                         cell.appendChild(goLink);
                         break;
@@ -136,7 +136,7 @@ function renderTable(url, noLoading) {
                     case 'go_ids':
                     case 'g':
                         cell.innerHTML = value.map(go_id => 
-                            `<a href="/syngenome/go.html?id=${encodeURIComponent(go_id)}">${go_id}</a>`
+                            `<a href="/syngenome/go?id=${encodeURIComponent(go_id)}">${go_id}</a>`
                         ).join(', ');
                         if (value.length === 0) {
                             cell.innerHTML = '-';
@@ -145,7 +145,7 @@ function renderTable(url, noLoading) {
 
                     case 'go_term':
                         const goTermLink = document.createElement('a');
-                        goTermLink.href = `/syngenome/go.html?id=${encodeURIComponent(value)}`;
+                        goTermLink.href = `/syngenome/go?id=${encodeURIComponent(value)}`;
                         goTermLink.textContent = capitalize(value);
                         cell.appendChild(goTermLink);
                         if (!searchKey) {
@@ -156,7 +156,7 @@ function renderTable(url, noLoading) {
                     case 'go_terms':
                     case 't':
                         cell.innerHTML = value.map(go_term => 
-                            `<a href="/syngenome/go.html?id=${encodeURIComponent(go_term)}">${go_term}</a>`
+                            `<a href="/syngenome/go?id=${encodeURIComponent(go_term)}">${go_term}</a>`
                         ).join(', ');
                         if (value.length === 0) {
                             cell.innerHTML = '-';
@@ -165,7 +165,7 @@ function renderTable(url, noLoading) {
 
                     case 'domain_id':
                         const domainLink = document.createElement('a');
-                        domainLink.href = `/syngenome/domain.html?id=${encodeURIComponent(value)}`;
+                        domainLink.href = `/syngenome/domain?id=${encodeURIComponent(value)}`;
                         domainLink.textContent = value;
                         cell.appendChild(domainLink);
                         if (!searchKey) {
@@ -176,7 +176,7 @@ function renderTable(url, noLoading) {
                     case 'domain_ids':
                     case 'd':
                         cell.innerHTML = value.map(domain_id => 
-                            `<a href="/syngenome/domain.html?id=${encodeURIComponent(domain_id)}">${domain_id}</a>`
+                            `<a href="/syngenome/domain?id=${encodeURIComponent(domain_id)}">${domain_id}</a>`
                         ).join(', ');
                         if (value.length === 0) {
                             cell.innerHTML = '-';
@@ -186,7 +186,7 @@ function renderTable(url, noLoading) {
                     case 'species_id':
                     case 's':
                         const speciesLink = document.createElement('a');
-                        speciesLink.href = `/syngenome/species.html?id=${encodeURIComponent(value)}`;
+                        speciesLink.href = `/syngenome/species?id=${encodeURIComponent(value)}`;
                         speciesLink.textContent = value;
                         cell.appendChild(speciesLink);
                         if (!searchKey) {
@@ -197,7 +197,7 @@ function renderTable(url, noLoading) {
                     case 'uniprot_id':
                     case 'u':
                         const uniprotLink = document.createElement('a');
-                        uniprotLink.href = `/syngenome/uniprot.html?id=${encodeURIComponent(value)}`;
+                        uniprotLink.href = `/syngenome/uniprot?id=${encodeURIComponent(value)}`;
                         uniprotLink.textContent = value;
                         cell.appendChild(uniprotLink);
                         if (!searchKey) {

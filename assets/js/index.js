@@ -40,15 +40,15 @@ const speciesButton = document.getElementById('species-button');
 // Add click event listeners to each button
 goTermButton.addEventListener('click', (e) => {
     e.preventDefault();
-    window.location.href = '/syngenome/browse/go.html';
+    window.location.href = '/syngenome/browse/go';
 });
 
 domainButton.addEventListener('click', (e) => {
     e.preventDefault();
-    window.location.href = '/syngenome/browse/domain.html';
+    window.location.href = '/syngenome/browse/domain';
 });
 
 speciesButton.addEventListener('click', (e) => {
     e.preventDefault();
-    window.location.href = '/syngenome/browse/species.html';
+    window.location.href = '/syngenome/browse/species';
 });

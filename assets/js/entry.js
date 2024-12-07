@@ -241,12 +241,12 @@ function generatePageUniProt(uniprot_id, jsonUrl) {
 
             const row = filteredData[0];
 
-            const species_content = `<a href="/syngenome/species.html?id=${row.s}">${row.s}</a>`;
+            const species_content = `<a href="/syngenome/species?id=${row.s}">${row.s}</a>`;
             const domain_content = row.d.map(domain => {
-                return `<a href="/syngenome/domain.html?id=${domain}">${domain}</a>`;
+                return `<a href="/syngenome/domain?id=${domain}">${domain}</a>`;
             }).join(', ');
             const go_content = zip(row.g, row.t).map(([go_id, go_term]) => {
-                return `<a href="/syngenome/go.html?id=${go_id}">${go_term} (${go_id})</a>`;
+                return `<a href="/syngenome/go?id=${go_id}">${go_term} (${go_id})</a>`;
             }).join(', ');
 
             const summaryTable = `
