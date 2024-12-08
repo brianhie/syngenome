@@ -18,8 +18,9 @@ a {
     max-width: 800px;
     padding: 40px;
     text-align: left;
-    margin: 6rem auto;
+    margin: auto;
     box-sizing: border-box;
+    padding-top: 18vh;
 }
 
 .container {
@@ -251,7 +252,7 @@ a {
     overflow: hidden;
     /*background-color: #e3dacdaa;*/
     color: black;
-    /*position: absolute;*/
+    position: absolute;
     top: 0px;
     width: 100%;
     font-size: 16px;
@@ -316,14 +317,14 @@ a {
 }
 
 .menu-container {
-    position: absolute;
+    /*position: absolute;*/
     top: 0;
     right: 0;
     padding: 20px;
     z-index: 99999;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 769px) {
     .menu-container {
         display: none;
     }
