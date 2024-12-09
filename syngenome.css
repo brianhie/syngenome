@@ -23,6 +23,12 @@ a {
     padding-top: 18vh;
 }
 
+@media (max-width: 428px) {
+    .index-container {
+        padding-top: 15vh;
+    }
+}
+
 .container {
     max-width: 1150px;
     margin: 7rem auto;
@@ -575,6 +581,18 @@ a {
     position: fixed;
     left: 0;
     bottom: 0;
+}
+
+@media (max-width: 428px) and (max-height: 700px) {
+    #footer {
+        display: none;
+    }
+}
+
+@media (max-height: 400px) {
+    #footer {
+        display: none;
+    }
 }
 
 .footer-content {
