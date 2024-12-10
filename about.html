@@ -26,7 +26,7 @@
 
     <p>In the genomes of prokaryotes and phage, genes with related functions frequently appear directly next to each other along the DNA sequence. As a result, prompting Evo with a sequence encoding a function of interest instructs the model to generate functionally related genes. This enables <strong>function-guided generative design by prompt engineering a genomic language model.</strong></p>
 
-    <p>SynGenome is organized according to the known functions, domains, and species of the prompt sequences. The corresponding response sequences are likely enriched for genes with related functions or domains, but they could contain many other interesting genes as well. The <strong>generated sequences in SynGenome may be very different from anything found in nature while still performing useful biological functions</strong> (TODO: ADD LINK TO PAPER), opening up a new universe of biological discovery.</p>
+    <p>SynGenome is organized according to the known functions, domains, and species of the prompt sequences. The corresponding response sequences are likely enriched for genes with related functions or domains, but they could contain many other interesting genes as well. The <strong>generated sequences in SynGenome may be very different from anything found in nature while still performing useful biological functions</strong> <!--(TODO: ADD LINK TO PAPER)-->, opening up a new universe of biological discovery.</p>
 
     <h2 id="faqs">FAQs</h2>
 
@@ -46,7 +46,7 @@
 
     <h4>Have any sequences in SynGenome been experimentally validated?</h4>
 
-    <p>Using the same strategy for generating sequences in SynGenome, we have had high experimental success rates in low-throughput experiments in which we test only tens-of-variants for the desired function encoded by a genomic prompt. This includes the design of proteins with anti-CRISPR activity, as well as the design of both bacterial toxins and their conjugate antitoxins. See our paper (TODO: ADD LINK) for more details.</p>
+    <p>Using the same strategy for generating sequences in SynGenome, we have had high experimental success rates in low-throughput experiments in which we test only tens-of-variants for the desired function encoded by a genomic prompt. This includes the design of proteins with anti-CRISPR activity, as well as the design of both bacterial toxins and their conjugate antitoxins. See our paper <!--TODO: ADD LINK--> for more details.</p>
 
     <h2 id="methodology">Methodology</h2>
 
@@ -89,7 +89,7 @@
 
     <h4>Model and sampling algorithm</h4>
 
-    <p>We generate sequences with the Evo 1.5 model (TODO: add link) without any additional finetuning or post-training. We use a standard autoregressive decoding algorithm to sample new sequences with a temperature of 0.7, top-<em>k</em> of 4, and top-<em>p</em> of 1. Code for generating sequences with Evo can be found <a href="https://github.com/evo-design/evo/blob/main/evo/generation.py">here</a>. For each prompt type described above, we sampled 2 sequences.</p>
+    <p>We generate sequences with the Evo 1.5 model <!--TODO: add link--> without any additional finetuning or post-training. We use a standard autoregressive decoding algorithm to sample new sequences with a temperature of 0.7, top-<em>k</em> of 4, and top-<em>p</em> of 1. Code for generating sequences with Evo can be found <a href="https://github.com/evo-design/evo/blob/main/evo/generation.py">here</a>. For each prompt type described above, we sampled 2 sequences.</p>
 
     <h4>Post-processing</h4>
 
