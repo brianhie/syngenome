@@ -1,8 +1,10 @@
 const exampleQueries = [
+    'suppression of host CRISPR-cas system',
     'toxin sequestering activity',
-    'GO:0097351',
+    'RNA binding',
+    'GO:0004518',
     'P22995',
-    'IPR022789',
+    'IPR003615',
     'Escherichia coli'
 ];
 
