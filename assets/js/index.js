@@ -1,7 +1,7 @@
 const exampleQueries = [
     'suppression of host CRISPR-cas system',
     'toxin sequestering activity',
-    'RNA binding',
+    'deaminase activity',
     'GO:0004518',
     'P22995',
     'IPR003615',
