@@ -278,7 +278,7 @@ function generatePageUniProt(uniprot_id, jsonUrl) {
                 e.preventDefault();
                 showLoading();
                 await processAndDownloadUniProtCSV(
-                    `https://huggingface.co/datasets/evo-design/syngenome-uniprot/resolve/main/${chunkDir}/final_syngenome_prompts_chunk_${chunk}_evo_generations_cleaned_uniprot_data_w_names_w_proteins.csv.gz`,
+                    `https://huggingface.co/datasets/evo-design/syngenome-uniprot/resolve/main/${chunkDir}/syngenome_uniprot_grouped_${chunk}.csv.gz`,
                     row.u
                 );
                 hideLoading();
