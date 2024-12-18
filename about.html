@@ -38,7 +38,7 @@
 
     <p>In the genomes of prokaryotes and phage, genes with related functions frequently appear directly next to each other along the DNA sequence. As a result, prompting Evo with a sequence encoding a function of interest instructs the model to generate functionally related genes. This enables <strong>function-guided generative design by prompt engineering a genomic language model.</strong></p>
 
-    <p>SynGenome is organized according to the known functions, domains, and species of the prompt sequences. The corresponding response sequences are likely enriched for genes with related functions or domains, but they could contain many other interesting genes as well. The <strong>generated sequences in SynGenome may be very different from anything found in nature while still performing useful biological functions</strong> <!--(TODO: ADD LINK TO PAPER)-->, opening up a new universe of biological discovery.</p>
+    <p>SynGenome is organized according to the known functions, domains, and species of the prompt sequences. The corresponding response sequences are likely enriched for genes with related functions or domains, but they could contain many other interesting genes as well. The <strong>generated sequences in SynGenome <a href="https://www.biorxiv.org/content/10.1101/2024.12.17.628962">may be very different from anything found in nature while still performing useful biological functions</a></strong>, opening up a new universe of biological discovery.</p>
 
     <h2 id="faqs">FAQs</h2>
 
@@ -58,7 +58,7 @@
 
     <h4>Have any sequences in SynGenome been experimentally validated?</h4>
 
-    <p>Using the same strategy for generating sequences in SynGenome, we have had high experimental success rates in low-throughput experiments in which we test only tens-of-variants for the desired function encoded by a genomic prompt. This includes the design of proteins with anti-CRISPR activity, as well as the design of both bacterial toxins and their conjugate antitoxins. See our paper <!--TODO: ADD LINK--> for more details.</p>
+    <p>Using the same strategy for generating sequences in SynGenome, we have had high experimental success rates in low-throughput experiments in which we test only tens-of-variants for the desired function encoded by a genomic prompt. This includes the design of proteins with anti-CRISPR activity, as well as the design of both bacterial toxins and their conjugate antitoxins. See <a href="https://www.biorxiv.org/content/10.1101/2024.12.17.628962">our paper</a> for more details.</p>
 
     <h2 id="methodology">Methodology</h2>
 
@@ -101,7 +101,7 @@
 
     <h4>Model and sampling algorithm</h4>
 
-    <p>We generate sequences with the Evo 1.5 model <!--TODO: add link--> without any additional finetuning or post-training. We use a standard autoregressive decoding algorithm to sample new sequences with a temperature of 0.7, top-<em>k</em> of 4, and top-<em>p</em> of 1. Code for generating sequences with Evo can be found <a href="https://github.com/evo-design/evo/blob/main/evo/generation.py">here</a>. For each prompt type described above, we sampled 2 sequences.</p>
+    <p>We generate sequences with the <a href="https://github.com/evo-design/evo/">Evo 1.5 model</a> without any additional finetuning or post-training. We use a standard autoregressive decoding algorithm to sample new sequences with a temperature of 0.7, top-<em>k</em> of 4, and top-<em>p</em> of 1. Code for generating sequences with Evo can be found <a href="https://github.com/evo-design/evo/blob/main/evo/generation.py">here</a>. For each prompt type described above, we sampled 2 sequences.</p>
 
     <h4>Post-processing</h4>
 
@@ -266,18 +266,16 @@
 
     <h2 id="license">License and citation</h2>
 
-        <p>SynGenome is freely available under an <a href="https://opensource.org/license/mit">MIT license</a>. If this database or any of its contents prove useful for your research, please cite Merchant et al. (2024).</p>
+        <p>SynGenome is freely available under an <a href="https://opensource.org/license/mit">MIT license</a>. If this database or any of its contents prove useful for your research, please cite <a href="https://www.biorxiv.org/content/10.1101/2024.12.17.628962">Merchant et al. (2024)</a>.</p>
 
-        <p class="about-citation">@article{nguyen2024sequence,
-    author = {Eric Nguyen and Michael Poli and Matthew G. Durrant and Brian Kang and Dhruva Katrekar and David B. Li and Liam J. Bartie and Armin W. Thomas and Samuel H. King and Garyk Brixi and Jeremy Sullivan and Madelena Y. Ng and Ashley Lewis and Aaron Lou and Stefano Ermon and Stephen A. Baccus and Tina Hernandez-Boussard and Christopher Ré and Patrick D. Hsu and Brian L. Hie },
-    title = {Sequence modeling and design from molecular to genome scale with Evo},
-    journal = {Science},
-    volume = {386},
-    number = {6723},
-    pages = {eado9336},
-    year = {2024},
-    doi = {10.1126/science.ado9336},
-    URL = {https://www.science.org/doi/abs/10.1126/science.ado9336},
+        <p class="about-citation">@article {merchant2024semantic,
+	author = {Merchant, Aditi T and King, Samuel H and Nguyen, Eric and Hie, Brian L},
+	title = {Semantic mining of functional de novo genes from a genomic language model},
+	year = {2024},
+	doi = {10.1101/2024.12.17.628962},
+	publisher = {Cold Spring Harbor Laboratory},
+	URL = {https://www.biorxiv.org/content/early/2024/12/18/2024.12.17.628962},
+	journal = {bioRxiv}
 }</p>
 
       <footer id="footer-links"></footer>
