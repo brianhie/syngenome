@@ -182,7 +182,6 @@ function generatePageSpecies(speciesID, jsonUrl) {
 
 async function processAndDownloadUniProtCSV(url, uniprotId) {
     try {
-        console.log(url);
         const response = await fetch(url);
 
         const decompressedStream = response.body
