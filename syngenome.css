@@ -633,6 +633,12 @@ a {
     padding: 20px;
 }
 
+@media (max-width: 700px) {
+    .about-container {
+        display: block;
+    }
+}
+
 .about-content {
     flex: 3;
     padding: 0px;
