@@ -238,20 +238,7 @@ a {
     padding: 4px 0 6px 0;
     display: flex;
     justify-content: space-between;
-}
-
-.navbar {
-    overflow: hidden;
-    /*background-color: #e3dacdaa;*/
-    color: black;
-    position: absolute;
-    top: 0px;
-    width: 100%;
-    font-size: 16px;
-    font-weight: 400;
-    padding: 4px 0 6px 0;
-    display: flex;
-    justify-content: space-between;
+    z-index: 1000000;
 }
 
 .navbar-index {
