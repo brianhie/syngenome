@@ -8,6 +8,7 @@ body {
     font-family: "Roboto Mono", monospace;
     background-color: #f9f6ee;
     z-index: 1;
+    position: relative;
 }
 
 a {
@@ -22,6 +23,7 @@ a {
     margin: auto;
     box-sizing: border-box;
     padding-top: 18vh;
+    z-index: 1;
 }
 
 @media (max-width: 428px) {
@@ -40,6 +42,7 @@ a {
     background-color: #fdfcfa;
     border-radius: 0px;
     box-sizing: border-box;
+    z-index: 1;
 }
 
 .title {
@@ -619,6 +622,7 @@ a {
     max-width: 1150px;
     margin: 7rem auto;
     padding: 20px;
+    z-index: 1;
 }
 
 @media (max-width: 700px) {
