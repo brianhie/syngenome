@@ -247,7 +247,7 @@ div[id*="loading"] {
     font-size: 13px; 
     width: 518px;
     max-width: 90%;
-    max-height: 35%;
+    height: 50%;
     overflow-y: auto;
     font-family: 'Roboto Mono', monospace;
     box-shadow: 2px 2px 8px rgba(0,0,0,0.15);
@@ -258,6 +258,12 @@ div[id*="loading"] {
     left: 20px;
     z-index: 1001;
     box-sizing: border-box;
+}
+
+@media (max-width: 428px) and (max-height: 1000px) {
+    #clickInfo {
+        max-height: 25%;
+    }
 }
 
 #clickInfo .section-header {
@@ -390,6 +396,7 @@ div[id*="loading"] {
     border: 1px solid #ccc; 
     border-radius: 8px;
     padding: 30px;
+    width: 70%;
     max-width: 580px; 
     z-index: 100000000;
     font-family: 'Roboto Mono', monospace; 
