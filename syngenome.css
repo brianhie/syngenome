@@ -567,6 +567,7 @@ a {
     position: fixed;
     left: 0;
     bottom: 0;
+    z-index: 2;
 }
 
 @media (max-width: 428px) and (max-height: 700px) {
@@ -588,7 +589,7 @@ a {
 }
 
 .footer-content img {
-    height: 65px;
+    height: 42px;
     margin: 10px;
 }
 
