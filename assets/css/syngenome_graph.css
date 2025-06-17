@@ -54,34 +54,6 @@ body {
     font-family: 'Roboto Mono', monospace; 
 }
 
-/* Immediate hiding of default loading - highest priority */
-#loadingBar,
-.vis-loading-screen,
-div[id*="loading"] {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    position: absolute !important;
-    left: -9999px !important;
-    z-index: -1 !important;
-}
-
-/* Custom loading overlay */
-#customLoadingOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: #f9f6ef;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 10000;
-    font-family: 'Roboto Mono', monospace;
-}
-
 #customLoadingOverlay .loading-text {
     color: #2c3e50;
     font-size: 14px;
@@ -139,7 +111,7 @@ div[id*="loading"] {
     position: fixed;
     top: 63px;
     left: 20px;
-    z-index: 99999999;
+    z-index: 10;
 }
 
 #searchBox {
@@ -154,7 +126,7 @@ div[id*="loading"] {
     position: fixed;
     top: 95px;
     left: 20px;
-    z-index:999;
+    z-index: 10;
 }
 
 #nextMatchBtn {
@@ -168,7 +140,7 @@ div[id*="loading"] {
     position: fixed;
     top: 95px;
     left: 428px;
-    z-index: 999;
+    z-index: 10;
     color: white;
 }
 
@@ -196,7 +168,7 @@ div[id*="loading"] {
     position: fixed;
     top: 140px;
     left: 20px;
-    z-index: 999;
+    z-index: 10;
     font-family: 'Roboto Mono', monospace;
     /*transition: opacity 0.3s ease, visibility 0.3s ease;*/
     display: flex;
@@ -256,7 +228,7 @@ div[id*="loading"] {
     position: fixed;
     top: 135px;
     left: 20px;
-    z-index: 1001;
+    z-index: 10;
     box-sizing: border-box;
 }
 
@@ -342,7 +314,7 @@ div[id*="loading"] {
     font-family: 'Roboto Mono', monospace;
     font-size: 12px;
     box-shadow: 2px 2px 8px rgba(0,0,0,0.15);
-    z-index: 1001;
+    z-index: 100;
 }
 
 #legend .legend-title {
@@ -398,7 +370,7 @@ div[id*="loading"] {
     padding: 30px;
     width: 70%;
     max-width: 580px; 
-    z-index: 100000000;
+    z-index: 100;
     font-family: 'Roboto Mono', monospace; 
     font-size: 14px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
