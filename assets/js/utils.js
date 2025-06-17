@@ -67,27 +67,29 @@ function checkIfMobile() {
   );
 }
 
-async function fetchAndParseJSON(url, overrideData) {
+async function fetchAndParseJSON(url, overrideData, noCache) {
     if (overrideData) {
         return overrideData;
     }
-    
-    // Try cache first
-    try {
-        const db = await openDB();
-        const tx = db.transaction('decompressed', 'readonly');
-        const store = tx.objectStore('decompressed');
-        const cached = await new Promise((resolve, reject) => {
-            const request = store.get(url);
-            request.onerror = () => reject(request.error);
-            request.onsuccess = () => resolve(request.result);
-        });
 
-        if (cached) {
-            return cached.data;
+    if (!noCache) {
+        // Try cache first
+        try {
+            const db = await openDB();
+            const tx = db.transaction('decompressed', 'readonly');
+            const store = tx.objectStore('decompressed');
+            const cached = await new Promise((resolve, reject) => {
+                const request = store.get(url);
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => resolve(request.result);
+            });
+
+            if (cached) {
+                return cached.data;
+            }
+        } catch (e) {
+            console.warn('Cache read failed:', e);
         }
-    } catch (e) {
-        console.warn('Cache read failed:', e);
     }
 
     // If not in cache, fetch and cache

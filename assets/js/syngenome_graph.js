@@ -363,8 +363,8 @@ async function drawGraph() {
     var container = document.getElementById('mynetwork');
 
     const [nodes_json, edges_json] = await Promise.all([
-        fetchAndParseJSON('/syngenome/data/nodes_with_positions.json'),
-        fetchAndParseJSON('/syngenome/data/edges.json')
+        fetchAndParseJSON('/syngenome/data/nodes_with_positions.json', false, true),
+        fetchAndParseJSON('/syngenome/data/edges.json', false, true)
     ]);
     
     nodes = new vis.DataSet(nodes_json);
