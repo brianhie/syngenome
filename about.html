@@ -48,7 +48,7 @@
 
     <p>In the genomes of prokaryotes and phage, genes with related functions frequently appear directly next to each other along the DNA sequence. As a result, prompting Evo with a sequence encoding a function of interest instructs the model to generate functionally related genes. This enables <strong>function-guided generative design by prompt engineering a genomic language model.</strong></p>
 
-    <p>SynGenome is organized according to the known functions, domains, and species of the prompt sequences. The corresponding response sequences are likely enriched for genes with related functions or domains, but they could contain many other interesting genes as well. The <strong>generated sequences in SynGenome <a href="https://www.biorxiv.org/content/10.1101/2024.12.17.628962">may be very different from anything found in nature while still performing useful biological functions</a></strong>, opening up a new universe of biological discovery.</p>
+    <p>SynGenome is organized according to the known functions, domains, and species of the prompt sequences. The corresponding response sequences are likely enriched for genes with related functions or domains, but they could contain many other interesting genes as well. The <strong>generated sequences in SynGenome <a href="https://www.nature.com/articles/s41586-025-09749-7">may be very different from anything found in nature while still performing useful biological functions</a></strong>, opening up a new universe of biological discovery.</p>
 
     <h2 id="faqs">FAQs</h2>
 
@@ -64,11 +64,11 @@
 
     <h4>How should I use SynGenome?</h4>
 
-    <p>Many important biological systems, with applications in genome editing or DNA synthesis, have been found by searching through genomic databases in a process referred to as &ldquo;genome mining.&rdquo; The sequences in SynGenome could be mined similarly. But rather than mining natural sequences, these sequences are generated based on their relationship with known genes in the prompt and can be unlike natural sequences, which is why <strong>we refer to this process as &ldquo;semantic mining.&rdquo;</strong> Because the synthetic sequences are likely enriched for functions that are related to the prompt sequence, these sequences could form the basis of a functional screening library.</p>
+    <p>Many important biological systems, with applications in genome editing or DNA synthesis, have been found by searching through genomic databases in a process referred to as &ldquo;genome mining.&rdquo; The sequences in SynGenome could be mined similarly. But rather than mining natural sequences, these sequences are generated based on their relationship with known genes in the prompt and can be unlike natural sequences, which is why <strong>we refer to this process as &ldquo;semantic design.&rdquo;</strong> Because the synthetic sequences are likely enriched for functions that are related to the prompt sequence, these sequences could form the basis of a functional screening library.</p>
 
     <h4>Have any sequences in SynGenome been experimentally validated?</h4>
 
-    <p>Using the same strategy for generating sequences in SynGenome, we have had high experimental success rates in low-throughput experiments in which we test only tens of variants for the desired function encoded by a genomic prompt. This includes the design of proteins with anti-CRISPR activity, as well as the design of both bacterial toxins and their conjugate antitoxins. See <a href="https://www.biorxiv.org/content/10.1101/2024.12.17.628962">our paper</a> for more details.</p>
+    <p>Using the same strategy for generating sequences in SynGenome, we have had high experimental success rates in low-throughput experiments in which we test only tens of variants for the desired function encoded by a genomic prompt. This includes the design of proteins with anti-CRISPR activity, as well as the design of both bacterial toxins and their conjugate antitoxins. See <a href="https://www.nature.com/articles/s41586-025-09749-7">our paper</a> for more details.</p>
 
     <h2 id="methodology">Methodology</h2>
 
@@ -287,16 +287,15 @@
 
     <h2 id="license">License and citation</h2>
 
-        <p>SynGenome is freely available under an <a href="https://opensource.org/license/mit">MIT license</a>. If this database or any of its contents prove useful for your research, please cite <a href="https://www.biorxiv.org/content/10.1101/2024.12.17.628962">Merchant et al. (2024)</a>.</p>
+        <p>SynGenome is freely available under an <a href="https://opensource.org/license/mit">MIT license</a>. If this database or any of its contents prove useful for your research, please cite <a href="https://www.nature.com/articles/s41586-025-09749-7">Merchant et al. (2025)</a>.</p>
 
-        <p class="about-citation">@article {merchant2024semantic,
+        <p class="about-citation">@article {merchant2025semantic,
     author = {Merchant, Aditi T and King, Samuel H and Nguyen, Eric and Hie, Brian L},
-    title = {Semantic mining of functional de novo genes from a genomic language model},
-    year = {2024},
-    doi = {10.1101/2024.12.17.628962},
-    publisher = {Cold Spring Harbor Laboratory},
-    URL = {https://www.biorxiv.org/content/early/2024/12/18/2024.12.17.628962},
-    journal = {bioRxiv}
+    title = {Semantic design of functional de novo genes from a genomic language model},
+    year = {2025},
+    doi = {10.1038/s41586-025-09749-7},
+    URL = {https://www.nature.com/articles/s41586-025-09749-7},
+    journal = {Nature}
 }</p>
 
       <footer id="footer-links"></footer>
