@@ -268,6 +268,11 @@
 
     <p>When using SynGenome, please keep in mind a few important details. All of the generated DNA sequences are synthetic sequences and any downstream functional claims regarding these sequences should be based on additional experimental data. To achieve high experimental success rates, some bioinformatic filtering related to your function of interest is recommended. The &ldquo;function,&rdquo; &ldquo;domain,&rdquo; and &ldquo;species&rdquo; labels in SynGenome are based on the UniProt annotations of the prompt sequence. While the response sequences may be enriched for the same GO terms or InterPro domains as in the prompt, there could also be a diversity of biological structures and functions contained in the response. Generating sequences with a language model is prone to highly repetitive generations; while many trivially repetitive regions have been filtered out, some repetitive sequences, especially those with more complex motifs, have been retained.</p>
 
+    <h2 id="safety">Safety</h2>
+
+    <p>Evo is trained on datasets that explicitly exclude eukaryotic viruses, and semantic design is applied only to prokaryotic genomes, focusing the approach on functions that generally pose low risk to humans. We have also removed generations associated with select agents or regulated toxins, and prompts are functionally annotated so that sensitive categories can be identified. Finally, in practice, semantic design still requires extensive downstream filtering, screening, and optimization, and the SynGenome sequences should be treated as starting points that undergo additional screening review, as opposed to immediately testable constructs.</p>
+
+    
     <h2 id="acknowledgements">Acknowledgements</h2>
 
     <p>SynGenome makes use of and is inspired by other biological sequence databases such as the <a href="https://www.uniprot.org/">UniProt database</a> of protein sequences, the <a href="https://geneontology.org/">Gene Ontology database</a> of gene annotations, and the <a href="https://www.ebi.ac.uk/interpro/">InterPro database</a> of protein domain annotations. Evo is trained on data from the <a href="https://gtdb.ecogenomic.org/">Genome Taxonomy Database (GTDB)</a> and the <a href="https://genome.jgi.doe.gov/portal/IMG_PR/IMG_PR.home.html">IMG/PR</a> and <a href="https://img.jgi.doe.gov/cgi-bin/vr/main.cgi">IMG/VR</a> databases from the <a href="https://jgi.doe.gov/">Joint Genome Institute</a>. We extend our gratitude to the developers and maintainers of these resources.</p>
@@ -305,6 +310,7 @@
           <li><a href="#methodology">Methodology</a></li>
           <li><a href="#network">Domain Association Network</a></li>
           <li><a href="#limitations">Limitations</a></li>
+          <li><a href="#safety">Safety</a></li>
           <li><a href="#acknowledgements">Acknowledgements</a></li>
           <li><a href="#download">Download</a></li>
           <li><a href="#license">License and citation</li>
