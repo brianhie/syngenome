@@ -2,6 +2,8 @@ let filteredData = null;
 let totalData = null;
 let searchKey = null;
 let jsonUrl = null;
+let processedDataCache = null;
+let processedDataCacheKey = null;
 
 const tableBody = document.querySelector('#dataTable tbody');
 const prevButton = document.getElementById('prevButton');
@@ -61,43 +63,73 @@ const columnOrder = [
     'n_seqs_prot', 'r'
 ];
 
+function buildProcessedDataCacheKey() {
+    return `${jsonUrl || ''}|${filterKey || ''}|${filterValue || ''}|${filterTerm || ''}`;
+}
+
+function invalidateProcessedDataCache() {
+    processedDataCache = null;
+    processedDataCacheKey = null;
+}
+
+function applyFiltersAndSort(data) {
+    return data
+        .filter(item => {
+            if (filterTerm) {
+                const searchValues = Object.values(item);
+                const filterMatch = searchValues.some(value => {
+                    const searchArray = Array.isArray(value) ? value : [value];
+                    return searchArray.some(element =>
+                        String(element).toLowerCase().includes(filterTerm)
+                    );
+                });
+                return filterMatch && isItemAllowableUnderURLParam(item);
+            }
+            return isItemAllowableUnderURLParam(item);
+        })
+        .sort((a, b) => {
+            const aValue = Number(a.n_prompts !== undefined ? a.n_prompts : a.p) || 0;
+            const bValue = Number(b.n_prompts !== undefined ? b.n_prompts : b.p) || 0;
+            if (aValue !== bValue) {
+                return bValue - aValue;
+            }
+            const aU = Number(a.u) || 0;
+            const bU = Number(b.u) || 0;
+            return bU - aU;
+        });
+}
+
+function getProcessedData(data) {
+    const key = buildProcessedDataCacheKey();
+    if (processedDataCache && processedDataCacheKey === key) {
+        return processedDataCache;
+    }
+
+    processedDataCache = applyFiltersAndSort(data);
+    processedDataCacheKey = key;
+    return processedDataCache;
+}
+
 function renderTable(url, noLoading) {
     if (!noLoading) {
         showLoading();
     }
 
+    const previousUrl = jsonUrl;
     jsonUrl = url;
+    if (previousUrl !== jsonUrl) {
+        totalData = null;
+        currentPage = 1;
+        invalidateProcessedDataCache();
+    }
 
     fetchAndParseJSON(jsonUrl, totalData)
         .then(data => {
-            filteredData = data
-                .filter(item => {
-                    if (filterTerm) {
-                        const searchValues = Object.values(item);
-                        const filterMatch = searchValues.some(value => {
-                            const searchArray = Array.isArray(value) ? value : [value];
-                            return searchArray.some(element =>
-                                String(element).toLowerCase().includes(filterTerm)
-                            );
-                        });
-                        return filterMatch && isItemAllowableUnderURLParam(item);
-                    }
-                    return isItemAllowableUnderURLParam(item);
-                })
-                .sort((a, b) => {
-                    const aValue = Number(a.n_prompts !== undefined ? a.n_prompts : a.p) || 0;
-                    const bValue = Number(b.n_prompts !== undefined ? b.n_prompts : b.p) || 0;
-                    if (aValue !== bValue) {
-                        return bValue - aValue;
-                    }
-                    const aU = Number(a.u) || 0;
-                    const bU = Number(b.u) || 0;
-                    return bU - aU;
-                });
-
             if (!totalData) {
-                totalData = filteredData;
+                totalData = data;
             }
+
+            filteredData = getProcessedData(totalData);
 
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
@@ -262,6 +294,7 @@ searchInput.addEventListener('input', (e) => {
     timeoutId = setTimeout(() => {
         filterTerm = e.target.value.toLowerCase();
         currentPage = 1;
+        invalidateProcessedDataCache();
         renderTable(jsonUrl, true);
     }, 250);
 });

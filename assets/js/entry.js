@@ -1,18 +1,62 @@
+const datasetLookupCache = new Map();
+
+function normalizeLookupKey(value) {
+    if (value == null) {
+        return '';
+    }
+    return String(value);
+}
+
+function getCachedLookupMap(jsonUrl, lookupName, data, keySelector) {
+    let lookupStore = datasetLookupCache.get(jsonUrl);
+    if (!lookupStore) {
+        lookupStore = {};
+        datasetLookupCache.set(jsonUrl, lookupStore);
+    }
+
+    const cachedLookup = lookupStore[lookupName];
+    if (cachedLookup && cachedLookup.source === data) {
+        return cachedLookup.map;
+    }
+
+    const map = new Map();
+    data.forEach(row => {
+        const keys = keySelector(row);
+        keys.forEach(key => {
+            if (key == null) {
+                return;
+            }
+            const normalizedKey = normalizeLookupKey(key);
+            if (!map.has(normalizedKey)) {
+                map.set(normalizedKey, row);
+            }
+        });
+    });
+
+    lookupStore[lookupName] = {
+        source: data,
+        map
+    };
+
+    return map;
+}
+
 function generatePageGO(go_id, jsonUrl) {
     //showLoading();
     fetchAndParseJSON(jsonUrl)
         .then(data => {
-            const filteredData = data.filter(row => ((row.go_id === go_id) || row.go_term === go_id));
+            const normalizedGoID = normalizeLookupKey(go_id);
+            const goIDLookup = getCachedLookupMap(jsonUrl, 'goIDLookup', data, row => [row.go_id]);
+            const goTermLookup = getCachedLookupMap(jsonUrl, 'goTermLookup', data, row => [row.go_term]);
+            const row = goIDLookup.get(normalizedGoID) || goTermLookup.get(normalizedGoID);
 
-            if (filteredData.length === 0) {
+            if (!row) {
                 document.getElementById('content').innerHTML = `
                     <p class="entry-not-found">Could not find ${go_id}</p>
                     <p class="entry-not-found"><a href="/syngenome">Return to search.</a></p>
                 `;
                 return;
             }
-
-            const row = filteredData[0];
 
             const summaryTable = `
                 <h2>${capitalize(row.go_term)}</h2>
@@ -59,17 +103,17 @@ function generatePageDomain(domain_id, jsonUrl) {
     //showLoading();
     fetchAndParseJSON(jsonUrl)
         .then(data => {
-            const filteredData = data.filter(row => (row.domain_id === domain_id));
+            const normalizedDomainID = normalizeLookupKey(domain_id);
+            const domainLookup = getCachedLookupMap(jsonUrl, 'domainLookup', data, row => [row.domain_id]);
+            const row = domainLookup.get(normalizedDomainID);
 
-            if (filteredData.length === 0) {
+            if (!row) {
                 document.getElementById('content').innerHTML = `
                     <p class="entry-not-found">Could not find ${domain_id}</p>
                     <p class="entry-not-found"><a href="/syngenome">Return to search.</a></p>
                 `;
                 return;
             }
-
-            const row = filteredData[0];
 
             const summaryTable = `
                 <h2>${row.domain_id}</h2>
@@ -122,17 +166,17 @@ function generatePageSpecies(speciesID, jsonUrl) {
     //showLoading();
     fetchAndParseJSON(jsonUrl)
         .then(data => {
-            const filteredData = data.filter(row => (row.species_id === speciesID));
+            const normalizedSpeciesID = normalizeLookupKey(speciesID);
+            const speciesLookup = getCachedLookupMap(jsonUrl, 'speciesLookup', data, row => [row.species_id]);
+            const row = speciesLookup.get(normalizedSpeciesID);
 
-            if (filteredData.length === 0) {
+            if (!row) {
                 document.getElementById('content').innerHTML = `
                     <p class="entry-not-found">Could not find ${speciesID}</p>
                     <p class="entry-not-found"><a href="/syngenome">Return to search.</a></p>
                 `;
                 return;
             }
-
-            const row = filteredData[0];
 
             const summaryTable = `
                 <h2>${row.species_id}</h2>
@@ -228,17 +272,17 @@ function generatePageUniProt(uniprot_id, jsonUrl) {
     showLoading();
     fetchAndParseJSON(jsonUrl)
         .then(data => {
-            const filteredData = data.filter(row => row.u === uniprot_id);
+            const normalizedUniProtID = normalizeLookupKey(uniprot_id);
+            const uniProtLookup = getCachedLookupMap(jsonUrl, 'uniProtLookup', data, row => [row.u]);
+            const row = uniProtLookup.get(normalizedUniProtID);
 
-            if (filteredData.length === 0) {
+            if (!row) {
                 document.getElementById('content').innerHTML = `
                     <p class="entry-not-found">Could not find ${uniprot_id}</p>
                     <p class="entry-not-found"><a href="/syngenome">Return to search.</a></p>
                 `;
                 return;
             }
-
-            const row = filteredData[0];
 
             const species_content = `<a href="/syngenome/species?id=${row.s}">${row.s}</a>`;
             const domain_content = row.d.map(domain => {
