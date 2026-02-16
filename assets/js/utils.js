@@ -35,18 +35,121 @@ function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+const CACHE_DB_NAME = 'DataCache';
+const CACHE_DB_VERSION = 2;
+const CACHE_STORE_NAME = 'decompressed';
+const CACHE_SCHEMA_VERSION = 1;
+const DEFAULT_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+let dbPromise = null;
+const inFlightJSONRequests = new Map();
+
 function openDB() {
-    return new Promise((resolve, reject) => {
-        const request = indexedDB.open('DataCache', 1);
-        
-        request.onerror = () => reject(request.error);
+    if (dbPromise) {
+        return dbPromise;
+    }
+
+    dbPromise = new Promise((resolve, reject) => {
+        const request = indexedDB.open(CACHE_DB_NAME, CACHE_DB_VERSION);
+
+        request.onerror = () => {
+            dbPromise = null;
+            reject(request.error);
+        };
         request.onsuccess = () => resolve(request.result);
-        
+
         request.onupgradeneeded = (event) => {
             const db = event.target.result;
-            db.createObjectStore('decompressed', { keyPath: 'url' });
+            if (!db.objectStoreNames.contains(CACHE_STORE_NAME)) {
+                db.createObjectStore(CACHE_STORE_NAME, { keyPath: 'url' });
+            }
         };
     });
+
+    return dbPromise;
+}
+
+function getCacheTTLMS(url) {
+    if (url.includes('/file_mapping.json')) {
+        return 6 * 60 * 60 * 1000;
+    }
+    return DEFAULT_CACHE_TTL_MS;
+}
+
+function isCacheEntryFresh(entry) {
+    if (!entry) {
+        return false;
+    }
+
+    if (entry.schemaVersion !== CACHE_SCHEMA_VERSION) {
+        return false;
+    }
+
+    if (typeof entry.expiresAt !== 'number') {
+        return false;
+    }
+
+    return entry.expiresAt > Date.now();
+}
+
+async function readCachedJSON(url) {
+    const db = await openDB();
+    const tx = db.transaction(CACHE_STORE_NAME, 'readonly');
+    const store = tx.objectStore(CACHE_STORE_NAME);
+
+    const cached = await new Promise((resolve, reject) => {
+        const request = store.get(url);
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => resolve(request.result);
+    });
+
+    if (isCacheEntryFresh(cached)) {
+        return cached.data;
+    }
+
+    if (cached) {
+        const cleanupTx = db.transaction(CACHE_STORE_NAME, 'readwrite');
+        const cleanupStore = cleanupTx.objectStore(CACHE_STORE_NAME);
+        await new Promise((resolve, reject) => {
+            const request = cleanupStore.delete(url);
+            request.onerror = () => reject(request.error);
+            request.onsuccess = () => resolve();
+        });
+    }
+
+    return null;
+}
+
+async function writeCachedJSON(url, data) {
+    const db = await openDB();
+    const tx = db.transaction(CACHE_STORE_NAME, 'readwrite');
+    const store = tx.objectStore(CACHE_STORE_NAME);
+    const now = Date.now();
+    const expiresAt = now + getCacheTTLMS(url);
+
+    await new Promise((resolve, reject) => {
+        const request = store.put({
+            url,
+            data,
+            schemaVersion: CACHE_SCHEMA_VERSION,
+            cachedAt: now,
+            expiresAt
+        });
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => resolve();
+    });
+}
+
+async function parseJSONResponse(url, response) {
+    if (url.toLowerCase().endsWith('.gz')) {
+        const blob = await response.blob();
+        const ds = new DecompressionStream('gzip');
+        const decompressedStream = blob.stream().pipeThrough(ds);
+        const decompressedResponse = new Response(decompressedStream);
+        const text = await decompressedResponse.text();
+        return JSON.parse(text);
+    }
+
+    return response.json();
 }
 
 function cleanIdentifier(identifier) {
@@ -75,53 +178,43 @@ async function fetchAndParseJSON(url, overrideData, noCache) {
     if (!noCache) {
         // Try cache first
         try {
-            const db = await openDB();
-            const tx = db.transaction('decompressed', 'readonly');
-            const store = tx.objectStore('decompressed');
-            const cached = await new Promise((resolve, reject) => {
-                const request = store.get(url);
-                request.onerror = () => reject(request.error);
-                request.onsuccess = () => resolve(request.result);
-            });
-
-            if (cached) {
-                return cached.data;
+            const cachedData = await readCachedJSON(url);
+            if (cachedData !== null) {
+                return cachedData;
             }
         } catch (e) {
             console.warn('Cache read failed:', e);
         }
     }
 
-    // If not in cache, fetch and cache
-    const response = await fetch(url);
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+    if (inFlightJSONRequests.has(url)) {
+        return inFlightJSONRequests.get(url);
     }
 
-    if (url.toLowerCase().endsWith('.gz')) {
-        const blob = await response.blob();
-        const ds = new DecompressionStream('gzip');
-        const decompressedStream = blob.stream().pipeThrough(ds);
-        const decompressedResponse = new Response(decompressedStream);
-        const text = await decompressedResponse.text();
-        const data = JSON.parse(text);
+    const fetchPromise = (async () => {
+        // If not in cache, fetch and cache
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-        // Cache the result
-        try {
-            const db = await openDB();
-            const tx = db.transaction('decompressed', 'readwrite');
-            const store = tx.objectStore('decompressed');
-            await new Promise((resolve, reject) => {
-                const request = store.put({ url, data });
-                request.onerror = () => reject(request.error);
-                request.onsuccess = () => resolve();
-            });
-        } catch (e) {
-            console.warn('Cache write failed:', e);
+        const data = await parseJSONResponse(url, response);
+
+        if (!noCache) {
+            try {
+                await writeCachedJSON(url, data);
+            } catch (e) {
+                console.warn('Cache write failed:', e);
+            }
         }
 
         return data;
-    }
+    })();
 
-    return response.json();
+    inFlightJSONRequests.set(url, fetchPromise);
+    try {
+        return await fetchPromise;
+    } finally {
+        inFlightJSONRequests.delete(url);
+    }
 }
